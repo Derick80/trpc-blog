@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import PostCard from '~/components/post-card'
 
 import { api } from "~/utils/api";
 
@@ -12,12 +13,12 @@ function PostListingPage() {
 
     return (
       <div>
+        {data?.length}
+<Link href="/posts/new">Create Post</Link>
+
         {data?.map((post) => {
-          return (
-            <article key={post.id}>
-              <p>{post.title}</p>
-              <Link href={`/posts/${post.id}`}>Read post</Link>
-            </article>
+          return(
+            <PostCard key={post.id} post={post} />
           )
         })}
       </div>

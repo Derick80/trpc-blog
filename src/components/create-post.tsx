@@ -1,8 +1,9 @@
+import { Box, Button, Textarea } from '@mantine/core'
 import React from 'react'
 import { object,string } from 'zod'
 import { api } from '~/utils/api'
 
-const postSchema = object({
+export const postSchema = object({
     title: string().min(10).max(100),
     content: string().min(10).max(1000)
 
@@ -21,6 +22,11 @@ export default function CreatePost(){
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
+    const formData = new FormData(
+        e.currentTarget as HTMLFormElement
+    ).entries()
+    console.log(formData);
+
     const data = { title, content }
     try {
         await postSchema.parseAsync(data)
@@ -37,17 +43,27 @@ export default function CreatePost(){
     return(
         <>
         {error && JSON.stringify(error)}
+        <Box
+
+
+        >
         <form
+
         onSubmit={handleSubmit}
         >
-        <textarea
+        <Textarea
+        label="Title"
         onChange={(e) => setTitle(e.target.value)}
         />
-        <textarea
+        <Textarea
+        label="Content"
         onChange={(e) => setContent(e.target.value)}
         />
-        <button type="submit">Submit</button>
+        <Button
+        variant="outline"
+        type="submit">Submit</Button>
         </form>
+        </Box>
         </>
     )
 }
