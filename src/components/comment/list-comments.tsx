@@ -81,7 +81,6 @@ mb='md'
                 <Text>{comment.createdAt.toISOString()}</Text>
 
             </Group>
-            list here
             {comment.body}
             </Box>
     </Box>

@@ -65,6 +65,7 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
  */
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
+import { User } from '@prisma/client'
 
 const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: superjson,
@@ -121,7 +122,14 @@ export const protectedProcedure = t.procedure.use(enforceUserIsAuthed);
 
 
 
-
+export type Comment = {
+    id: string
+    body: string
+    createdAt: Date
+    parentId: string | null
+    postId: string
+    user: User
+}
 export type CommentWithChildren = Comment & {
     children: CommentWithChildren[]
 }

@@ -1,4 +1,4 @@
-import { Box, Button, Textarea } from '@mantine/core'
+import { Box, Button, Textarea, TextInput } from '@mantine/core'
 import React from 'react'
 import { object,string } from 'zod'
 import { api } from '~/utils/api'
@@ -44,14 +44,17 @@ export default function CreatePost(){
         <>
         {error && JSON.stringify(error)}
         <Box
-
+        sx={{
+            width: '50%',
+            margin: 'auto',
+        }}
 
         >
         <form
 
         onSubmit={handleSubmit}
         >
-        <Textarea
+        <TextInput
         label="Title"
         onChange={(e) => setTitle(e.target.value)}
         />

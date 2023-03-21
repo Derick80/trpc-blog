@@ -5,7 +5,6 @@ import {
     protectedProcedure,
   } from "~/server/api/trpc";
   import { z } from "zod";
-import crypto from "crypto";
 
   const getSlug = (title: string) =>
     title
@@ -31,9 +30,17 @@ import crypto from "crypto";
                 createdAt: true,
                 updatedAt: true,
                 comments: true,
+                author:{
+                    select:{
+                        id: true,
+                        name: true,
+                        image: true,
+                        email: true,
+                    }}
 
 
             }
+
         })
     }),
 
