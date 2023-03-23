@@ -1,5 +1,6 @@
 import { Avatar, Card, Container, Divider, Flex, Group, Text, Title, Tooltip } from '@mantine/core'
 import dayjs from 'dayjs'
+import Image from 'next/image'
 import Link from 'next/link'
 
 
@@ -9,6 +10,7 @@ export type PostProps ={
         title: string
         slug: string
         content: string
+        imageUrl: string
         createdAt: Date
         updatedAt: Date
         author:{
@@ -42,6 +44,13 @@ export default function PostCard({post}:PostProps){
                         { post.title }
                     </Title>
                 </Link>
+
+{ post.imageUrl && <Image
+                    src={ post.imageUrl }
+                    alt={ post.title }
+                    width={ 100 }
+                    height={ 100 }
+                /> }
 
 
               <div dangerouslySetInnerHTML={{ __html: post.content }} />
