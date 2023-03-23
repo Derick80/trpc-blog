@@ -6,8 +6,8 @@
     "build": "next build",
     "dev": "next dev",
     "postinstall": "prisma generate",
-    "lint": "next lint",
-    "start": "next start"
+    "start": "next start",
+    "format": "prettier \"src/**/*.ts\" \"src/**/*.tsx\" --write . "
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.297.0",

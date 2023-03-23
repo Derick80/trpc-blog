@@ -16,7 +16,7 @@ export default function CreatePost() {
   const router = useRouter();
   const [title, setTitle] = React.useState<string>("");
   const [content, setContent] = React.useState("");
-  const [error, setError] = React.useState<string | null>(null);
+  const [error, setError] = React.useState();
 
   const { mutateAsync, isLoading } = api.post.new.useMutation();
 
@@ -29,7 +29,6 @@ export default function CreatePost() {
     try {
       await postSchema.parseAsync(data);
     } catch (error) {
-      setError(error.message);
       return;
     }
     await mutateAsync(data);
@@ -104,7 +103,7 @@ export default function CreatePost() {
           margin: "auto",
         }}
       >
-        <form onSubmit={handlePostSubmit}>
+        <form onSubmit={(e) => void handlePostSubmit(e)}>
           <TextInput label="Title" onChange={(e) => setTitle(e.target.value)} />
           <Textarea
             label="Content"

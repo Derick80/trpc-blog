@@ -1,11 +1,9 @@
-import CreatePost from '~/components/create-post'
+import CreatePost from "~/components/create-post";
 
-export default function NewPostPage(){
-
-
-    return (
-        <>
-        <CreatePost />
-        </>
-    )
+export default function NewPostPage() {
+  return (
+    <>
+      <CreatePost />
+    </>
+  );
 }

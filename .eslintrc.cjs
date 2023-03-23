@@ -18,6 +18,7 @@ const config = {
   plugins: ["@typescript-eslint"],
   extends: ["next/core-web-vitals", "plugin:@typescript-eslint/recommended"],
   rules: {
+    "react/no-unescaped-entities": "off",
     "@typescript-eslint/consistent-type-imports": [
       "warn",
       {
