@@ -7,7 +7,8 @@
     "dev": "next dev",
     "postinstall": "prisma generate",
     "start": "next start",
-    "format": "prettier \"src/**/*.ts\" \"src/**/*.tsx\" --write . "
+    "format": "prettier \"src/**/*.ts\" \"src/**/*.tsx\" --write . ",
+    "lint": "eslint \"src/**/*.ts\" \"src/**/*.tsx\" --quiet"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.297.0",

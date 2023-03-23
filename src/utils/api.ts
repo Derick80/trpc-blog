@@ -6,6 +6,7 @@
  */
 import { httpBatchLink, loggerLink } from "@trpc/client";
 import { createTRPCNext } from "@trpc/next";
+import { InferQueryResult } from '@trpc/react-query/dist/utils/inferReactQueryProcedure'
 import { type inferRouterInputs, type inferRouterOutputs } from "@trpc/server";
 import superjson from "superjson";
 
@@ -66,3 +67,9 @@ export type RouterInputs = inferRouterInputs<AppRouter>;
  * @example type HelloOutput = RouterOutputs['example']['hello']
  */
 export type RouterOutputs = inferRouterOutputs<AppRouter>;
+
+export type Comment = RouterOutputs['comment']['getAll'][number]
+
+export type CommentWithChildren = Comment & {
+  children: Array<CommentWithChildren>
+}

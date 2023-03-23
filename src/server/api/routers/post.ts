@@ -27,6 +27,7 @@ export const postRouter = createTRPCRouter({
         content: true,
         createdAt: true,
         updatedAt: true,
+        comments:true,
         author: {
           select: {
             id: true,
@@ -109,6 +110,10 @@ export const postRouter = createTRPCRouter({
         where: {
           id: input.postId,
         },
+        include:{
+          comments:true,
+        },
+
       });
     }),
 });
