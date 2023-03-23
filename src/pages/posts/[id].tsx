@@ -3,8 +3,7 @@ import { TrashIcon } from "@radix-ui/react-icons"
 import Link from 'next/link'
 import { useRouter } from "next/router"
 import React from 'react'
-import CommentForm from "~/components/comment/comment-form"
-import CommentSection from "~/components/comment/comment-section"
+
 import { api } from "~/utils/api"
 
 export default function PostIdPage () {
@@ -98,7 +97,6 @@ export default function PostIdPage () {
             </button>
 
             <button onClick={ () => setEdit(!edit) }>Edit</button>
-            <CommentSection />
         </Container>
     )
 }
