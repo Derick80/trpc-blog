@@ -1,5 +1,5 @@
 import { Avatar, Card,  Divider, Flex, Group, Text, Title, Tooltip } from '@mantine/core'
-import { Post } from '@prisma/client'
+import { Post, User } from '@prisma/client'
 import dayjs from 'dayjs'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -14,14 +14,9 @@ export type PostProps ={
         createdAt: Date,
         updatedAt:Date,
         slug:string,
-        author:{
-            id:string,
-            name:string,
-            email:string,
-            image:string,
 
-        }
-
+   } & {
+    author: Omit<User, 'emailVerified'>
    }
 }
 export default function PostCard({post}:PostProps){
