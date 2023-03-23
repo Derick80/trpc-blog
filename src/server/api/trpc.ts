@@ -130,7 +130,10 @@ export type Comment = {
     createdAt: Date
     parentId: string | null
     postId: string
-    user: User
+    user: User,
+    userId: string
+    children: Comment[]
+
 }
 export type CommentWithChildren = Comment & {
     children: CommentWithChildren[]
