@@ -38,7 +38,6 @@ import {
                         image: true,
                         email: true,
                     }},
-                    images: true
 
             }
 

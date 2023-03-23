@@ -33,7 +33,8 @@ export const commentRouter = createTRPCRouter({
                 createdAt: true,
                 parentId: true,
                 postId: true,
-                user:true
+                user:true,
+                children: true,
             }
 })
         return comments

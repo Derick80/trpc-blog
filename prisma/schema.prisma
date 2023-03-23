@@ -6,14 +6,16 @@ generator client {
 }
 
 datasource db {
-    provider = "postgresql"
-    // NOTE: When using postgresql, mysql or sqlserver, uncomment the @db.Text annotations in model Account below
+    provider = "cockroachdb"
+    // NOTE: When using postgresql, mysql or sqlserver, uncomment the  annotations in model Account below
     // Further reading:
     // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
     // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
     url      = env("DATABASE_URL")
 }
-
+model Widget {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+}
 model Example {
     id        String   @id @default(cuid())
     createdAt DateTime @default(now())
@@ -27,12 +29,12 @@ model Account {
     type              String
     provider          String
     providerAccountId String
-    refresh_token     String? @db.Text
-    access_token      String?  @db.Text
+    refresh_token     String?
+    access_token      String?
     expires_at        Int?
     token_type        String?
     scope             String?
-    id_token          String?  @db.Text
+    id_token          String?
     session_state     String?
     user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -56,7 +58,6 @@ model User {
     accounts      Account[]
     sessions      Session[]
     posts        Post[]
-    likes        Like[]
     comments     Comment[]
 }
 
@@ -79,20 +80,10 @@ model Post {
     author    User     @relation(fields: [authorId], references: [id])
     authorId  String
     slug      String
-    likes     Like[]
     comments  Comment[]
-    images    Image[]
 }
 
-model Image {
-  id   String @id @unique @default(cuid())
-  name String @default("uploaded image")
-  url  String
-  post Post  @relation(fields: [postId], references: [id])
-  postId String
 
-  @@index([postId])
-}
 model Comment {
   id   String @id @default(cuid())
   body String
@@ -105,19 +96,4 @@ model Comment {
   parentId String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-}
-model Like {
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  userId String
-
-  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  postId String
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@id([postId, userId])
-  @@index([postId, userId])
-  @@index([postId])
-  @@index([userId])
 }
