@@ -10,7 +10,7 @@ export type PostProps ={
         title: string
         slug: string
         content: string
-        imageUrl: string
+        imageUrl: string | null
         createdAt: Date
         updatedAt: Date
         author:{
