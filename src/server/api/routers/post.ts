@@ -59,7 +59,7 @@ import {
     input
 })=>{
     const slug = getSlug(input.title)
-const {key, title, content,url} = input
+const { title, content,url} = input
 
 
     return await ctx.prisma.post.create({

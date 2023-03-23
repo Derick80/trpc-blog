@@ -13,10 +13,9 @@ export default function PostIdPage () {
 
     const router = useRouter()
 
-const { postId } = router.query as { postId: string }
-console.log(postId, "postId");
+    const postId = router.query.id as string
 
-    const { data, isLoading } = api.post.getSingle.useQuery({ postId : router.query.id as string})
+    const { data, isLoading } = api.post.getSingle.useQuery({ postId: router.query.id as string })
     const [edit, setEdit] = React.useState(false)
     const [title, setTitle] = React.useState<string>(data?.title as string)
     const [content, setContent] = React.useState(
@@ -29,8 +28,10 @@ console.log(postId, "postId");
 
     const handleDelete = async (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault()
-        const data = { postId }
-        await deletePost(data)
+
+        await deletePost(
+            { postId }
+        )
         isLoading ? null : await router.push("/posts")
     }
 

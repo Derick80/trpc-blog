@@ -1,4 +1,4 @@
-import { Avatar, Card, Container, Divider, Flex, Group, Text, Title, Tooltip } from '@mantine/core'
+import { Avatar, Card,  Divider, Flex, Group, Text, Title, Tooltip } from '@mantine/core'
 import dayjs from 'dayjs'
 import Image from 'next/image'
 import Link from 'next/link'
