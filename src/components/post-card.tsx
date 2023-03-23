@@ -13,6 +13,14 @@ export type PostProps ={
         imageUrl:string,
         createdAt: Date,
         updatedAt:Date,
+        slug:string,
+        author:{
+            id:string,
+            name:string,
+            email:string,
+            image:string,
+
+        }
 
    }
 }
@@ -57,19 +65,21 @@ export default function PostCard({post}:PostProps){
                     direction="column"
                    >
                       <Text>Posted by:</Text>
-                       <Flex align="center"
+                       {
+                            post.author && <Flex align="center"
 
-                        direction="row"
-                        > <Tooltip label={ post.author.name }>
-                                { post.author.image && <Avatar
-                                    size="sm"
-                                    radius="xl"
+                                direction="row"
+                            > <Tooltip label={ post.author.name }>
+                                    { post.author.image && <Avatar
+                                        size="sm"
+                                        radius="xl"
 
-                                    src={ post.author.image } alt={ post.author.email } />
-                                }
-                            </Tooltip>
-                            <Text>{ dayjs(post.createdAt).format("MMM D") }</Text>
+                                        src={ post.author.image } alt={ post.author.email } />
+                                    }
+                                </Tooltip>
+                                <Text>{ dayjs(post.createdAt).format("MMM D") }</Text>
                             </Flex>
+                       }
                     </Flex>
                 </Group>
 

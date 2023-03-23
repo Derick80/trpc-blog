@@ -46,8 +46,7 @@ import {
     new: protectedProcedure.input(z.object({
         title: z.string().max(100),
         content: z.string().min(10),
-        url: z.string().optional(),
-        key: z.string().optional()
+        url: z.string()
 
 
 

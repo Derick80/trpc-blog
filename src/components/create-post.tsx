@@ -103,7 +103,7 @@ export default function CreatePost() {
           margin: "auto",
         }}
       >
-        <form onSubmit={handlePostSubmit}>
+        <form onSubmit={(e)=> void handlePostSubmit(e)}>
           <TextInput label="Title" onChange={(e) => setTitle(e.target.value)} />
           <Textarea
             label="Content"
