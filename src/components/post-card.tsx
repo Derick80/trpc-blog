@@ -35,7 +35,7 @@ export default function PostCard({post}:PostProps){
 
             >
                 <Link
-                    href={ `/posts/${ post.slug }` }
+                    href={ `/posts/${ post.id }` }
                     passHref
                 >
                     <Title>

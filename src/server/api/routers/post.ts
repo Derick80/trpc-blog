@@ -26,6 +26,7 @@ import {
                 id: true,
                 title: true,
                 slug: true,
+                imageUrl: true,
                 content: true,
                 createdAt: true,
                 updatedAt: true,
@@ -36,8 +37,8 @@ import {
                         name: true,
                         image: true,
                         email: true,
-                    }}
-
+                    }},
+                    images: true
 
             }
 
@@ -46,7 +47,11 @@ import {
 
     new: protectedProcedure.input(z.object({
         title: z.string().max(100),
-        content: z.string().min(10)
+        content: z.string().min(10),
+        url: z.string().optional(),
+        key: z.string().optional()
+
+
 
 })
 ).mutation(async ({
@@ -54,13 +59,15 @@ import {
     input
 })=>{
     const slug = getSlug(input.title)
+const {key, title, content,url} = input
 
 
     return await ctx.prisma.post.create({
         data:{
-            title: input.title,
-            content: input.content,
+            title: title,
+            content: content,
             slug: slug,
+            imageUrl:url,
            author:{
                connect:{
                    id: ctx.session.user.id
@@ -73,9 +80,9 @@ import {
 ),
 updatePost: protectedProcedure.input(z.object({
     postId: z.string().cuid(),
-    slug: z.string().max(100),
     title: z.string().max(100),
-    content: z.string().min(10)
+    content: z.string().min(10),
+
 })
 ).mutation(async ({
     ctx,
@@ -110,15 +117,15 @@ deletePost: protectedProcedure.input(z.object({
 
 
     getSingle: publicProcedure.input(z.object({
-        slug: z.string()
+        postId: z.string().cuid()
     })).query(({
         ctx,
         input
     })=>{
         return ctx.prisma.post.findUnique({
             where:{
-              slug: input.slug
-            }
+                id: input.postId
+                }
         })
     }
     )

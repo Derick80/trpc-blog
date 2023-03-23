@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { api } from '~/utils/api'
 export default function CommentForm({parentId}:{parentId?: string}){
 const router = useRouter()
-const slug = router.query.slug as string
+const postId = router.query.id as string
 const {mutateAsync, isLoading} = api.comment.create.useMutation()
 
 
@@ -23,7 +23,7 @@ const handleSubmit = async (values: {
 
 }) => {
     await mutateAsync({
-        slug,
+        postId,
         parentId,
         body: values.body,
     })

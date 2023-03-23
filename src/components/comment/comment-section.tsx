@@ -6,11 +6,11 @@ import CommentForm from './comment-form'
 import ListComments from './list-comments'
 export default function CommentSection(){
     const router = useRouter()
-    const slug = router.query.slug as string
-console.log(slug, 'slug');
+    const postId = router.query.id as string
+console.log(postId, 'postId');
 
     const {data} = api.comment.getAll.useQuery({
-        slug
+        postId
     })
 
 

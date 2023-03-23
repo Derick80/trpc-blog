@@ -10,6 +10,8 @@
     "start": "next start"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.297.0",
+    "@aws-sdk/s3-request-presigner": "^3.297.0",
     "@emotion/react": "^11.10.6",
     "@emotion/server": "^11.10.0",
     "@mantine/core": "^6.0.4",
@@ -31,12 +33,15 @@
     "@trpc/next": "^10.9.0",
     "@trpc/react-query": "^10.9.0",
     "@trpc/server": "^10.9.0",
+    "aws-sdk": "^2.1341.0",
+    "axios": "^1.3.4",
     "cloudinary": "^1.35.0",
     "dayjs": "^1.11.7",
     "next": "^13.2.1",
     "next-auth": "^4.19.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.43.5",
     "superjson": "1.9.1",
     "zod": "^3.20.6"
