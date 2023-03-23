@@ -4,21 +4,22 @@ import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
 
 import { api } from "~/utils/api";
-import { NavLink } from '@mantine/core'
+import { NavLink } from "@mantine/core";
 
 const Home: NextPage = () => {
-
-
   return (
     <>
       <Head>
         <title>ブログ Derick's blog</title>
-        <meta name="Derick's T3 stack blog
-        " content="Derick's T3 stack blog" />
+        <meta
+          name="Derick's T3 stack blog
+        "
+          content="Derick's T3 stack blog"
+        />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex min-h-screen flex-col items-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
-<AuthShowcase />
+        <AuthShowcase />
       </main>
     </>
   );
@@ -31,7 +32,7 @@ const AuthShowcase: React.FC = () => {
 
   const { data: secretMessage } = api.example.getSecretMessage.useQuery(
     undefined, // no input
-    { enabled: sessionData?.user !== undefined },
+    { enabled: sessionData?.user !== undefined }
   );
 
   return (
