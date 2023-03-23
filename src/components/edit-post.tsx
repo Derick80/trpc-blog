@@ -26,7 +26,6 @@ export default function UpdatePost(){
         try {
             await postSchema.parseAsync(data)
         } catch (error) {
-            setError(error.message)
             return
 
         }
