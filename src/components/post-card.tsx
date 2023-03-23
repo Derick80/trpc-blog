@@ -1,24 +1,18 @@
 import { Avatar, Card,  Divider, Flex, Group, Text, Title, Tooltip } from '@mantine/core'
+import { Post } from '@prisma/client'
 import dayjs from 'dayjs'
 import Image from 'next/image'
 import Link from 'next/link'
 
 
 export type PostProps ={
-   post:{
-        id: string
-        title: string
-        slug: string
-        content: string
-        imageUrl: string | null
-        createdAt: Date
-        updatedAt: Date
-        author:{
-            id: string
-            name: string
-            image: string
-            email: string
-        }
+   post: {
+        id:string,
+        title:string,
+        content:string,
+        imageUrl:string,
+        createdAt: Date,
+        updatedAt:Date,
 
    }
 }

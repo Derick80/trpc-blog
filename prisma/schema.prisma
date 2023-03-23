@@ -76,7 +76,7 @@ model Post {
     title     String
     content   String
     published Boolean  @default(false)
-    imageUrl  String?
+    imageUrl  String
     author    User     @relation(fields: [authorId], references: [id])
     authorId  String
     slug      String

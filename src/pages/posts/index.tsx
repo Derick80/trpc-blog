@@ -1,8 +1,6 @@
 import Link from 'next/link'
 import PostCard from '~/components/post-card'
-import { StandardDropzone } from '~/components/standard-dropzone'
-
-import { api, RouterOutputs } from "~/utils/api";
+import { api } from "~/utils/api";
 
 
 function PostListingPage() {
@@ -20,11 +18,13 @@ function PostListingPage() {
       >
         {data?.length}
 <Link href="/posts/new">Create Post</Link>
-        {data?.map((post) => {
-          return(
-            <PostCard key={post.id} post={post} />
-          )
-        })}
+       {
+          data &&  data.map((post) => {
+            return (
+              <PostCard key={ post.id } post={ post } />
+            )
+          }) }
+
       </div>
     )
   }
