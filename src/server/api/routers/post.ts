@@ -30,7 +30,6 @@ import {
                 content: true,
                 createdAt: true,
                 updatedAt: true,
-                comments: true,
                 author:{
                     select:{
                         id: true,

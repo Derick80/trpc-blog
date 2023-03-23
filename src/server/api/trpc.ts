@@ -123,19 +123,5 @@ const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
 export const protectedProcedure = t.procedure.use(enforceUserIsAuthed);
 
 
-
-export type Comment = {
-    id: string
-    body: string
-    createdAt: Date
-    parentId: string | null
-    postId: string
-    user: User,
-    userId: string
-    children: Comment[]
-
-}
-export type CommentWithChildren = Comment & {
-    children: CommentWithChildren[]
-}
+1
 
