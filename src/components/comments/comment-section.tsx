@@ -29,7 +29,7 @@ export default function CommentSection({ postId }: { postId?: string }) {
 )
 
 }
-      {show && data && <ListComments comments={formComments(data || [])} />}
+  <ListComments comments={formComments(data || [])} />
     </Box>
   );
 }
