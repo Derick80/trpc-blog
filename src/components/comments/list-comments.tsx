@@ -1,6 +1,8 @@
 import { Avatar, Box, Paper, Group, Text, Button } from "@mantine/core";
+import dayjs from 'dayjs'
+import { useSession } from 'next-auth/react'
 import React from "react";
-import type { CommentWithChildren } from "~/utils/api";
+import { api, CommentWithChildren } from "~/utils/api";
 import CommentForm from "./comment-form";
 
 function getReplyCountText(count: number) {
@@ -16,18 +18,45 @@ function getReplyCountText(count: number) {
 }
 
 function CommentActions({
+  editableUser,
   commentId,
   replyCount,
 }: {
+  editableUser: string;
   commentId: string;
   replyCount: number;
 }) {
+  const { data: session } = useSession();
+const isEditable = session?.user.id === editableUser ? true : false
+const {mutateAsync, isSuccess} = api.comment.delete.useMutation({
+
+})
+
   const [replying, setReplying] = React.useState(false);
+
+  const handleDelete = async () => {
+    await mutateAsync({
+      id: commentId
+    })
+    if (isSuccess) {
+      window.location.reload()
+    }
+
+  }
 
   return (
     <>
       <Group position="apart" mt="md">
         <Text>{getReplyCountText(replyCount)}</Text>
+        {
+          isEditable && <Button variant="outline">Edit</Button>
+        }
+        {
+          isEditable && <Button
+            onClick={() => void handleDelete()
+            }
+          variant="outline">Delete</Button>
+        }
         <Button onClick={() => setReplying(!replying)} variant="outline">
           Reply
         </Button>
@@ -55,12 +84,16 @@ function Comment({ comment }: { comment: CommentWithChildren }) {
         >
           <Group>
             <Text>{comment.user.name}</Text>
-            <Text>{comment.createdAt.toISOString()}</Text>
+            <Text>
+              {dayjs(comment.createdAt).format("MMMM D, YYYY [at] h:mm A")}
+
+              </Text>
           </Group>
           {comment.body}
         </Box>
       </Box>
       <CommentActions
+      editableUser={comment.user.id}
         commentId={comment.id}
         replyCount={comment.children?.length || 0}
       />

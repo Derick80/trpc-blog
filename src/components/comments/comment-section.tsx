@@ -16,13 +16,19 @@ export default function CommentSection({ postId }: { postId?: string }) {
     {
       postId: postId || (router.query.id as string),
     },
-    {}
+    {
+      enabled: !!postId || !!router.query.id,
+    }
   );
 
   return (
     <Box>
-      <CommentForm postId={postId || (router.query.id as string)} />
-      <button onClick={() => setShow(!show)}>Show comments</button>
+      <CommentForm postId={postId } />
+{data && data?.length > 0 && (
+        <button onClick={ () => setShow(!show) }>Show comments</button>
+)
+
+}
       {show && data && <ListComments comments={formComments(data || [])} />}
     </Box>
   );

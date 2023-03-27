@@ -1,6 +1,7 @@
 import { Box, Button, Group, Textarea } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useQueryClient } from "@tanstack/react-query";
+import { useSession } from 'next-auth/react'
 import { useRouter } from "next/router";
 import { api } from "~/utils/api";
 
@@ -18,6 +19,7 @@ export default function CommentForm({
     onSuccess: () => {
       void queryClient.invalidateQueries();
     },
+
   });
 
   const form = useForm({
@@ -31,7 +33,9 @@ export default function CommentForm({
       postId: postId || (router.query.id as string),
       parentId,
       body: values.body,
-    });
+    })
+    console.log(values);
+
     form.reset(),
       {
         onSuccess: () => {

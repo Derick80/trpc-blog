@@ -51,6 +51,7 @@ export default function PostIdPage() {
             type="text"
             name="title"
             defaultValue={data?.title}
+            value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
           <label htmlFor="content">Content</label>
@@ -58,6 +59,7 @@ export default function PostIdPage() {
             type="text"
             name="content"
             defaultValue={data?.content}
+            value={content}
             onChange={(e) => setContent(e.target.value)}
           />
 

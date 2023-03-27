@@ -70,6 +70,7 @@ export const commentRouter = createTRPCRouter({
           },
         });
 
+
         return comment;
       } catch (err) {
         throw new TRPCError({
@@ -77,4 +78,48 @@ export const commentRouter = createTRPCRouter({
         });
       }
     }),
+    update: protectedProcedure.input(
+      z.object({
+        id: z.string().max(100),
+        body: z.string().min(10),
+      })
+    ).mutation(async ({ ctx, input }) => {
+      const { id, body } = input;
+      try {
+        const comment = await ctx.prisma.comment.update({
+          where: {
+            id,
+          },
+          data: {
+            body,
+          },
+        });
+        return comment;
+      } catch (err) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+        });
+      }
+    }),
+
+  delete: protectedProcedure.input(
+    z.object({
+      id: z.string().max(100),
+    })
+  ).mutation(async ({ ctx, input }) => {
+    const { id } = input;
+    try {
+      const comment = await ctx.prisma.comment.delete({
+        where: {
+          id,
+        },
+      });
+      return comment;
+    } catch (err) {
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+      });
+    }
+  }
+  ),
 });
