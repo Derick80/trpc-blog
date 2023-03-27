@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { Container, Skeleton, Title } from "@mantine/core";
 import { TrashIcon } from "@radix-ui/react-icons";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import CommentSection from "~/components/comments/comment-section";

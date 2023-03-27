@@ -11,12 +11,12 @@ function PostListingPage() {
 
   return (
     <div className="mx-auto flex flex-col md:grid md:grid-cols-2">
-     <div className="flex flex-col gap-2 mx-auto m-2 items-center">
+      <div className="m-2 mx-auto flex flex-col items-center gap-2">
         <Link href="/posts/new">
           <PlusCircledIcon />
         </Link>
       </div>
-      <div className="mx-auto flex w-3/4 flex-col gap-5 md:col-span-2 md:flex-row">
+      <div className="mx-auto flex w-3/4 flex-col flex-wrap gap-5 md:col-span-2 md:flex-row">
         {data &&
           data.map((post) => {
             return <PostCard key={post.id} post={post} />;

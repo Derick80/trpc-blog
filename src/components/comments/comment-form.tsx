@@ -52,7 +52,7 @@ export default function CommentForm({
           />
 
           <Group position="right" mt="md">
-            <Button loading={isLoading} type="submit">
+            <Button loading={isLoading} variant="outline" type="submit">
               {parentId ? "Post reply" : "Post comment"}
             </Button>
           </Group>

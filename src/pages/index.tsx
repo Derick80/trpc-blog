@@ -34,7 +34,7 @@ const AuthShowcase: React.FC = () => {
   );
 
   return (
-    <main className="flex flex-col  w-full max-w-screen-2xl items-center gap-4 text-white">
+    <main className="flex w-full  max-w-screen-2xl flex-col items-center gap-4 text-white">
       <ul className="flex gap-4">
         <li>
           <Link href="/posts">Posts</Link>

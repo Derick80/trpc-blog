@@ -6,7 +6,6 @@
  */
 import { httpBatchLink, loggerLink } from "@trpc/client";
 import { createTRPCNext } from "@trpc/next";
-import { InferQueryResult } from "@trpc/react-query/dist/utils/inferReactQueryProcedure";
 import { type inferRouterInputs, type inferRouterOutputs } from "@trpc/server";
 import superjson from "superjson";
 

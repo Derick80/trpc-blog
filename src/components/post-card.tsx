@@ -10,23 +10,20 @@ import {
   Title,
   Tooltip,
 } from "@mantine/core";
-import { Post, User } from "@prisma/client";
-import { ChatBubbleIcon, CopyIcon, HeartIcon, Share1Icon } from '@radix-ui/react-icons'
+import { type Post, type User } from "@prisma/client";
+import { ChatBubbleIcon, HeartIcon, Share1Icon } from "@radix-ui/react-icons";
 import dayjs from "dayjs";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
-import type { Comment } from '~/utils/api'
+import type { Comment } from "~/utils/api";
 import CommentSection from "./comments/comment-section";
-
 
 export type PostCardProps = {
   post: Post & {
-    author: Omit<User, "emailVerified">
+    author: Omit<User, "emailVerified">;
     comments: Omit<Comment, "user">[];
-  }
-
-}
+  };
+};
 export default function PostCard({ post }: PostCardProps) {
   return (
     <>
@@ -53,30 +50,22 @@ export default function PostCard({ post }: PostCardProps) {
         />
 
         <Divider />
-        <div className="flex flex-row items-center pt-2 justify-between">
-          <div className='flex gap-2 '>
+        <div className="flex flex-row items-center justify-between pt-2">
+          <div className="flex gap-2 ">
             <HeartIcon />
             <p className="text-xs">0</p>
             <ChatBubbleIcon />
-            <p className="text-xs">{
-              post.comments?.length
-            }</p>
+            <p className="text-xs">{post.comments?.length}</p>
             <CopyButton
-              value={`https://trpc-blog-two.vercel.app/posts/${post.id}`}>
-
-                {({ copied }) => (
-                  <button
-                    className={copied ? 'text-green-500' : 'text-black'}
-
-                  >
-<Share1Icon />
-                  </button>
-                )
-              }
-
-              </CopyButton>
-
-            </div>
+              value={`https://trpc-blog-two.vercel.app/posts/${post.id}`}
+            >
+              {({ copied }) => (
+                <button className={copied ? "text-green-500" : "text-black"}>
+                  <Share1Icon />
+                </button>
+              )}
+            </CopyButton>
+          </div>
           <div className="flex flex-col">
             <p className="text-xs">Posted by:</p>
             {post.author && (
