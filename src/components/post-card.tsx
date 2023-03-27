@@ -1,6 +1,8 @@
 import {
   Avatar,
+  Button,
   Card,
+  CopyButton,
   Divider,
   Flex,
   Group,
@@ -9,33 +11,28 @@ import {
   Tooltip,
 } from "@mantine/core";
 import { Post, User } from "@prisma/client";
+import { ChatBubbleIcon, CopyIcon, HeartIcon, Share1Icon } from '@radix-ui/react-icons'
 import dayjs from "dayjs";
 import Image from "next/image";
 import Link from "next/link";
+import React from "react";
+import type { Comment } from '~/utils/api'
+import CommentSection from "./comments/comment-section";
 
-export type PostProps = {
-  post: {
-    id: string;
-    title: string;
-    content: string;
-    imageUrl: string;
-    createdAt: Date;
-    updatedAt: Date;
-    slug: string;
-  } & {
-    author: Omit<User, "emailVerified">;
-  };
-};
-export default function PostCard({ post }: PostProps) {
+
+export type PostCardProps = {
+  post: Post & {
+    author: Omit<User, "emailVerified">
+    comments: Omit<Comment, "user">[];
+  }
+
+}
+export default function PostCard({ post }: PostCardProps) {
   return (
     <>
-      <Card
+      <div
         key={post.id}
-        shadow="md"
-        padding="xl"
-        radius="xl"
-        className="mb-10"
-        withBorder
+        className="mb-10 w-full rounded-lg border-2 p-2 shadow-md hover:translate-y-2 "
       >
         <Link href={`/posts/${post.id}`} passHref>
           <Title>{post.title}</Title>
@@ -50,15 +47,40 @@ export default function PostCard({ post }: PostProps) {
           />
         )}
 
-        <div dangerouslySetInnerHTML={{ __html: post.content }} />
+        <div
+          className="prose prose-slate overflow-auto  text-sm"
+          dangerouslySetInnerHTML={{ __html: post.content }}
+        />
+
         <Divider />
-        <Group position="left"></Group>
-        <Group position="right">
-          <Flex align="center" direction="column">
-            <Text>Posted by:</Text>
+        <div className="flex flex-row items-center pt-2 justify-between">
+          <div className='flex gap-2 '>
+            <HeartIcon />
+            <p className="text-xs">0</p>
+            <ChatBubbleIcon />
+            <p className="text-xs">{
+              post.comments?.length
+            }</p>
+            <CopyButton
+              value={`https://trpc-blog-two.vercel.app/posts/${post.id}`}>
+
+                {({ copied }) => (
+                  <button
+                    className={copied ? 'text-green-500' : 'text-black'}
+
+                  >
+<Share1Icon />
+                  </button>
+                )
+              }
+
+              </CopyButton>
+
+            </div>
+          <div className="flex flex-col">
+            <p className="text-xs">Posted by:</p>
             {post.author && (
-              <Flex align="center" direction="row">
-                {" "}
+              <div className="flex flex-row gap-2">
                 <Tooltip label={post.author.name}>
                   {post.author.image && (
                     <Avatar
@@ -69,12 +91,16 @@ export default function PostCard({ post }: PostProps) {
                     />
                   )}
                 </Tooltip>
-                <Text>{dayjs(post.createdAt).format("MMM D")}</Text>
-              </Flex>
+                <p className="text-xs">
+                  {dayjs(post.createdAt).format("MMM D")}
+                </p>
+              </div>
             )}
-          </Flex>
-        </Group>
-      </Card>
+          </div>
+        </div>
+
+        <CommentSection postId={post.id} />
+      </div>
     </>
   );
 }

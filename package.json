@@ -43,11 +43,11 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-dropzone": "^14.2.3",
-    "react-hook-form": "^7.43.5",
     "superjson": "1.9.1",
     "zod": "^3.20.6"
   },
   "devDependencies": {
+    "@tailwindcss/typography": "^0.5.9",
     "@types/eslint": "^8.21.1",
     "@types/node": "^18.14.0",
     "@types/prettier": "^2.7.2",

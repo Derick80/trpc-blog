@@ -78,7 +78,7 @@ export default function CreatePost() {
           headers: { "Content-Type": file.type },
         })
         .then((response) => {
-          console.log(response);
+          console.log(response, "response");
           console.log("Successfully uploaded ", file.name);
         })
         .then(() => {

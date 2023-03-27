@@ -2,9 +2,7 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
-
 import { api } from "~/utils/api";
-import { NavLink } from "@mantine/core";
 
 const Home: NextPage = () => {
   return (
@@ -36,7 +34,7 @@ const AuthShowcase: React.FC = () => {
   );
 
   return (
-    <div className="flex flex-col items-center gap-4 text-white">
+    <main className="flex flex-col  w-full max-w-screen-2xl items-center gap-4 text-white">
       <ul className="flex gap-4">
         <li>
           <Link href="/posts">Posts</Link>
@@ -56,6 +54,6 @@ const AuthShowcase: React.FC = () => {
       >
         {sessionData ? "Sign out" : "Sign in"}
       </button>
-    </div>
+    </main>
   );
 };

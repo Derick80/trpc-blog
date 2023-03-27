@@ -13,21 +13,21 @@ export const commentRouter = createTRPCRouter({
         postId: z.string().max(100),
       })
     )
-    .query(async({ ctx, input }) => {
+    .query(async ({ ctx, input }) => {
       const { postId } = input;
       try {
         const comments = await ctx.prisma.comment.findMany({
           where: {
             Post: {
-              id:postId,
+              id: postId,
             },
           },
           orderBy: {
             createdAt: "desc",
           },
-            include: {
-                user:true,
-        },
+          include: {
+            user: true,
+          },
         });
         return comments;
       } catch (err) {
@@ -52,7 +52,7 @@ export const commentRouter = createTRPCRouter({
             body,
             Post: {
               connect: {
-                id:postId,
+                id: postId,
               },
             },
             user: {
