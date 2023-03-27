@@ -1,7 +1,7 @@
-import { Button, Flex } from "@mantine/core";
+import { Button } from "@mantine/core";
 import { RichTextEditor } from "@mantine/tiptap";
 import Link from "@tiptap/extension-link";
-import { EditorContent, useEditor } from "@tiptap/react";
+import {  useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { useCallback } from "react";
 import Image from "@tiptap/extension-image";
