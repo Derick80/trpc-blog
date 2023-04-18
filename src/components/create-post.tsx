@@ -18,7 +18,7 @@ export default function CreatePost() {
   const [content, setContent] = React.useState("");
   const [error, setError] = React.useState();
 
-  const { mutateAsync, isLoading } = api.post.new.useMutation();
+  const { mutateAsync, isLoading, isSuccess } = api.post.new.useMutation();
 
   async function handlePostSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -29,10 +29,12 @@ export default function CreatePost() {
     try {
       await postSchema.parseAsync(data);
     } catch (error) {
-      return;
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      return setError(error);
     }
     await mutateAsync(data);
-    isLoading ? null : await router.push("/posts");
+    isSuccess ? await router.push("/posts") : null;
   }
 
   const [presignedUrl, setPresignedUrl] = useState<string | null>(null);
@@ -96,7 +98,6 @@ export default function CreatePost() {
 
   return (
     <>
-      {error && JSON.stringify(error)}
       <Box
         sx={{
           width: "50%",
@@ -109,6 +110,7 @@ export default function CreatePost() {
             label="Content"
             onChange={(e) => setContent(e.target.value)}
           />
+          {error && JSON.stringify(error)}
           <input type="text" name="url" value={url || ""} />
           <Button variant="outline" type="submit">
             Submit

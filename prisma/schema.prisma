@@ -59,6 +59,7 @@ model User {
     sessions      Session[]
     posts        Post[]
     comments     Comment[]
+    likes        Like[]
 }
 
 model VerificationToken {
@@ -81,8 +82,17 @@ model Post {
     authorId  String
     slug      String
     comments  Comment[]
+    likes     Like[]
+    categories Category[]
 }
 
+model Category {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    value      String
+    posts     Post[]
+}
 
 model Comment {
   id   String @id @default(cuid())
@@ -96,4 +106,14 @@ model Comment {
   parentId String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+model Like {
+    user   User   @relation(fields: [userId], references: [id])
+    userId String
+    post   Post   @relation(fields: [postId], references: [id])
+    postId String
+    @@id ([postId, userId])
+  @@index([postId, userId])
+  @@index([postId])
+  @@index([userId])
 }

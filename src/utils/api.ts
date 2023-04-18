@@ -7,6 +7,7 @@
 import { httpBatchLink, loggerLink } from "@trpc/client";
 import { createTRPCNext } from "@trpc/next";
 import { type inferRouterInputs, type inferRouterOutputs } from "@trpc/server";
+import { User } from "next-auth";
 import superjson from "superjson";
 
 import { type AppRouter } from "~/server/api/root";
@@ -66,3 +67,8 @@ export type RouterInputs = inferRouterInputs<AppRouter>;
  * @example type HelloOutput = RouterOutputs['example']['hello']
  */
 export type RouterOutputs = inferRouterOutputs<AppRouter>;
+export type Comment = RouterOutputs["comment"]["getAll"][number];
+
+export type CommentWithChildren = Comment & {
+  children: Array<CommentWithChildren>;
+};
