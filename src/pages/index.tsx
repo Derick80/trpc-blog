@@ -17,7 +17,7 @@ const Home: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="flex w-full min-h-screen flex-col items-center">
+      <main className="flex min-h-screen w-full flex-col items-center">
         <AuthShowcase />
       </main>
     </>

@@ -73,7 +73,6 @@ export type PostWithComments = Post & {
   comments: Array<CommentWithChildren>;
 };
 
-
 export type CommentWithChildren = Comment & {
   children: Array<CommentWithChildren>;
 };

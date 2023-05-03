@@ -7,8 +7,12 @@ import { useCallback } from "react";
 import Image from "@tiptap/extension-image";
 import { ImageIcon } from "@radix-ui/react-icons";
 
-const TipTap = ({ content, onChange }: { content?: string, 
-onChange?: (args:any) => void
+const TipTap = ({
+  content,
+  onChange,
+}: {
+  content?: string;
+  onChange?: (args: any) => void;
 }) => {
   const editor = useEditor({
     content,

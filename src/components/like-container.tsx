@@ -1,17 +1,12 @@
-import { HeartIcon } from '@radix-ui/react-icons'
+import { HeartIcon } from "@radix-ui/react-icons";
 
-
-export default function LikeContainer({likesCount}: {likesCount: number}) {
-
+export default function LikeContainer({ likesCount }: { likesCount: number }) {
   return (
-    <div
-        className="flex items-center justify-center w-12 h-12 bg-gray-100 cursor-pointer"
-    >
-        <button className="flex items-center justify-center w-8 h-8  rounded-full cursor-pointer">
-            <HeartIcon className="w-5 h-5 text-gray-500" />
-            <p className="text-gray-500">{likesCount}</p>
-        </button>
-
+    <div className="flex h-12 w-12 cursor-pointer items-center justify-center bg-gray-100">
+      <button className="flex h-8 w-8 cursor-pointer items-center  justify-center rounded-full">
+        <HeartIcon className="h-5 w-5 text-gray-500" />
+        <p className="text-gray-500">{likesCount}</p>
+      </button>
     </div>
   );
 }

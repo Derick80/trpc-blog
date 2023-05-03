@@ -40,11 +40,11 @@ export const postRouter = createTRPCRouter({
             parentId: true,
           },
         },
-        _count:{
-          select:{
+        _count: {
+          select: {
             comments: true,
-            likes: true
-          }
+            likes: true,
+          },
         },
         likes: true,
         author: {
@@ -135,62 +135,58 @@ export const postRouter = createTRPCRouter({
         },
       });
     }),
-    likePost: protectedProcedure.input(z.object({
-      postId: z.string().cuid()
-    })).mutation(async ({ctx, input}) => {
-        const likedPost = await ctx.prisma.like.findUnique({
-          where: {
-            postId_userId: {
-              postId: input.postId,
-                          userId: ctx.session.user.id
-          }
+  likePost: protectedProcedure
+    .input(
+      z.object({
+        postId: z.string().cuid(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const likedPost = await ctx.prisma.like.findUnique({
+        where: {
+          postId_userId: {
+            postId: input.postId,
+            userId: ctx.session.user.id,
+          },
+        },
+      });
 
-
-          }
-        })
-
-       if(likedPost === null){
+      if (likedPost === null) {
         await ctx.prisma.like.create({
           data: {
             user: {
               connect: {
-                id: ctx.session.user.id
-              }
+                id: ctx.session.user.id,
+              },
             },
             post: {
               connect: {
-                id: input.postId
-              }
-            }
-          }
-        })
-    const updatedPost = await ctx.prisma.post.findUniqueOrThrow({
-          where: {
-            id: input.postId
+                id: input.postId,
+              },
+            },
           },
-          include:{
-            _count:{
-              select:{
-                likes: true
-              }
-            }
+        });
+        const updatedPost = await ctx.prisma.post.findUniqueOrThrow({
+          where: {
+            id: input.postId,
+          },
+          include: {
+            _count: {
+              select: {
+                likes: true,
+              },
+            },
+          },
+        });
 
-          }
-
-})
-
-const {_count, ...postData} = updatedPost
-return {
-  updatedPost:{
-    ...postData,
-    likesCount: _count.likes,
-    likedByUser: likedPost === null
-  }
-}
-
-       }
+        const { _count, ...postData } = updatedPost;
+        return {
+          updatedPost: {
+            ...postData,
+            likesCount: _count.likes,
+            likedByUser: likedPost === null,
+          },
+        };
+      }
     }),
-
-
-
 });

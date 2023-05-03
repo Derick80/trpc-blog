@@ -1,9 +1,9 @@
 import { Avatar, Divider, Text, Tooltip } from "@mantine/core";
-import { type Like, type User} from "@prisma/client";
+import { type Like, type User } from "@prisma/client";
 import dayjs from "dayjs";
 import Image from "next/image";
 import Link from "next/link";
-import { api} from "~/utils/api";
+import { api } from "~/utils/api";
 import CommentSection from "./comment-section";
 import React from "react";
 import { ChatBubbleIcon, StarIcon } from "@radix-ui/react-icons";
@@ -22,17 +22,12 @@ export type PostProps = {
       body: string;
       createdAt: Date;
       updatedAt: Date;
-     
-    }[]
+    }[];
     likes: Like[];
     author: User;
-
-  }
+  };
 };
-export default function PostCard({
-  post,
-
-}: PostProps) {
+export default function PostCard({ post }: PostProps) {
   const [showComments, setShowComments] = React.useState(true);
   return (
     <div
@@ -70,8 +65,7 @@ export default function PostCard({
           onClick={() => setShowComments(!showComments)}
         >
           <ChatBubbleIcon />
-          <p className="text-black dark:text-slate-50">
-          </p>
+          <p className="text-black dark:text-slate-50"></p>
         </button>
 
         {post.author && (
