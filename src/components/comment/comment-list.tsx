@@ -7,7 +7,7 @@ import CommentForm from "./comment-form";
 
 function getReplyCountText(count: number) {
   if (count === 0) {
-    return "No replies";
+    return "";
   }
 
   if (count === 1) {
@@ -81,7 +81,7 @@ function Comment({
           pl="md"
           sx={() => ({
             display: "flex",
-            flexDirection: "column",
+            flexDirection: "row",
           })}
         >
           <Group>
@@ -90,7 +90,7 @@ function Comment({
               {dayjs(comment.createdAt).format("MMMM D, YYYY [at] h:mm A")}
             </Text>
           </Group>
-          {comment.body}
+          <Text mt="md">{comment.body}</Text>
         </Box>
       </Box>
       <CommentActions

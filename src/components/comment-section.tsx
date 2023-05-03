@@ -5,7 +5,6 @@ import ListComments from "./comment/comment-list";
 import formComments from "./format-comments";
 
 export default function CommentSection({ postId }: { postId?: string }) {
-
   const router = useRouter();
 
   const { data } = api.comment.getAll.useQuery(
@@ -18,9 +17,7 @@ export default function CommentSection({ postId }: { postId?: string }) {
   );
 
   return (
-    <div
-      className="flex flex-col items-center justify-center gap-2 rounded-xl bg-slate-50 p-2 text-black dark:bg-black dark:text-slate-50"
-    >
+    <div className="items-centser flex flex-col justify-center gap-2 rounded-xl bg-slate-50 p-2 text-black dark:bg-black dark:text-slate-50">
       <CommentForm postId={postId || (router.query.id as string)} />
 
       <ListComments

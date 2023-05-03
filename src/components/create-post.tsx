@@ -1,15 +1,20 @@
-import { Box, Button, Textarea, TextInput } from "@mantine/core";
+import { Box,  Textarea, TextInput } from "@mantine/core";
 import axios from "axios";
 import { useRouter } from "next/router";
 import React, { useCallback, useMemo, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { object, string } from "zod";
 import { api } from "~/utils/api";
+import Button from './button'
+import TipTap from './tip-tap'
 
 export const postSchema = object({
-  title: string().min(10).max(100),
-  content: string().min(10).max(1000),
-  slug: string().min(10).max(1000).optional(),
+  title: string().min(10,{
+    message: "Title must be at least 10 characters long",
+  }).max(100),
+  content: string().min(10, {
+    message: "Content must be at least 10 characters long",
+  }).max(1000),
 });
 
 export default function CreatePost() {
@@ -23,9 +28,11 @@ export default function CreatePost() {
   async function handlePostSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const formData = new FormData(e.currentTarget as HTMLFormElement).entries();
-    console.log(formData);
+    console.log(Object.fromEntries(formData),'formData');
 
-    const data = { title, content, url };
+    const data = { title, content, url }
+    console.log(data,'content');
+    
     try {
       await postSchema.parseAsync(data);
     } catch (error) {
@@ -105,22 +112,30 @@ export default function CreatePost() {
         }}
       >
         <form onSubmit={(e) => void handlePostSubmit(e)}>
-          <TextInput label="Title" onChange={(e) => setTitle(e.target.value)} />
-          <Textarea
-            label="Content"
-            onChange={(e) => setContent(e.target.value)}
+          <TextInput
+            name="title"
+
+          label="Title" onChange={(e) => setTitle(e.target.value)} />
+          <label htmlFor="Content">Content</label>
+          <TipTap
+            
+              content="content"
+            onChange={(e) => setContent(e.currentTarget.value)}
           />
+
+          
+
           {error && JSON.stringify(error)}
-          <input type="text" name="url" value={url || ""} />
-          <Button variant="outline" type="submit">
+          <input type="text"
+            className="text-black"
+          name="url" value={url || ""} />
+          <Button variant='primary_filled' type="submit">
             Submit
           </Button>
         </form>
         <section>
           <h2 className="text-lg font-semibold">Standard Dropzone</h2>
-          <p className="mb-3">
-            Simple example for uploading one file at a time
-          </p>
+
           <div {...getRootProps()} className="dropzone-container">
             <input {...getInputProps()} />
             {isDragActive ? (
