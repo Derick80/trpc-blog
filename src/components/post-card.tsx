@@ -1,25 +1,38 @@
 import { Avatar, Divider, Text, Tooltip } from "@mantine/core";
-import { type Like, type Post, type User } from "@prisma/client";
+import { type Like, type User} from "@prisma/client";
 import dayjs from "dayjs";
 import Image from "next/image";
 import Link from "next/link";
-import { api, type CommentWithChildren } from "~/utils/api";
+import { api} from "~/utils/api";
 import CommentSection from "./comment-section";
 import React from "react";
 import { ChatBubbleIcon, StarIcon } from "@radix-ui/react-icons";
 import LikeContainer from "./like-container";
 
 export type PostProps = {
-  post: Post & {
-    _count: {
-      likes: number;
-    };
-    author: Omit<User, "emailVerified">;
-    comments: CommentWithChildren[];
+  post: {
+    id: string;
+    title: string;
+    content: string;
+    imageUrl: string;
+    createdAt: Date;
+    updatedAt: Date;
+    comments: {
+      id: string;
+      body: string;
+      createdAt: Date;
+      updatedAt: Date;
+     
+    }[]
     likes: Like[];
-  };
+    author: User;
+
+  }
 };
-export default function PostCard({ post }: PostProps) {
+export default function PostCard({
+  post,
+
+}: PostProps) {
   const [showComments, setShowComments] = React.useState(true);
   return (
     <div
@@ -58,7 +71,6 @@ export default function PostCard({ post }: PostProps) {
         >
           <ChatBubbleIcon />
           <p className="text-black dark:text-slate-50">
-            {post.comments.length}
           </p>
         </button>
 
@@ -79,7 +91,7 @@ export default function PostCard({ post }: PostProps) {
         )}
       </div>
       <Divider />
-      <LikeContainer likesCount={post._count?.likes} />
+      <LikeContainer likesCount={post.likes.length} />
       <BlogAction postId={post.id} />
       {showComments && <CommentSection postId={post.id} />}
     </div>

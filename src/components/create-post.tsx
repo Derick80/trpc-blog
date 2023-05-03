@@ -1,4 +1,4 @@
-import { Box,  Textarea, TextInput } from "@mantine/core";
+import { Box } from "@mantine/core";
 import axios from "axios";
 import { useRouter } from "next/router";
 import React, { useCallback, useMemo, useState } from "react";

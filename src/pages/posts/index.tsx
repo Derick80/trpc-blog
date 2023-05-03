@@ -31,7 +31,9 @@ function PostListingPage() {
 
       {data &&
         data.map((post) => {
-          return <PostCard key={post.id} post={post} />;
+          return <PostCard key={post.id} post={
+            post
+          } />;
         })}
       </div>
 

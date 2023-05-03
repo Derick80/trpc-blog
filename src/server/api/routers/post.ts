@@ -53,6 +53,7 @@ export const postRouter = createTRPCRouter({
             name: true,
             image: true,
             email: true,
+            emailVerified: true,
           },
         },
       },
