@@ -1,4 +1,4 @@
-import { Box } from "@mantine/core";
+import { Box, MultiSelect } from "@mantine/core";
 import axios from "axios";
 import { useRouter } from "next/router";
 import React, { useCallback, useMemo, useState } from "react";
@@ -25,19 +25,27 @@ export default function CreatePost() {
   const router = useRouter();
   const [title, setTitle] = React.useState<string>("");
   const [error, setError] = React.useState();
+const {data, isLoading} = api.categories.getAll.useQuery()
 
-  const { mutateAsync, isLoading, isSuccess } = api.post.new.useMutation();
-
+  const { mutateAsync, isSuccess } = api.post.new.useMutation();
+  const [selected, setSelected] = useState<string>("")
+  const [categories, setCategories] = useState<string[]>(
+    data?.map((category) => category.value) || []
+  
+  )
+  
   async function handlePostSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const title = formData.get("title")?.toString();
     const content = formData.get("content")?.toString();
-    if (!title || !content) return;
+
+    if (!title || !content || !categories) return;
     const data = {
       title,
       content,
       url,
+      category: selected,
     };
 
     try {
@@ -135,6 +143,21 @@ export default function CreatePost() {
             name="url"
             value={url || ""}
           />
+          <label htmlFor="categories">Categories</label>
+          {/* <select multiple name="categories" id="categories">
+            {data?.map((category) => (
+              <option key={category.id} value={category.value}>
+                {category.value}
+              </option>
+            ))}
+          </select> */}
+<MultiSelect 
+data={categories}
+shadow="sm"
+onChange={(e) => setSelected(e.join(","))}
+
+/>
+
           <Button variant="primary_filled" type="submit">
             Submit
           </Button>

@@ -29,6 +29,7 @@ export const postRouter = createTRPCRouter({
         updatedAt: true,
         published: true,
         authorId: true,
+        categories: true,
         comments: {
           select: {
             id: true,
@@ -65,12 +66,15 @@ export const postRouter = createTRPCRouter({
       z.object({
         title: z.string().max(100),
         content: z.string().min(10),
+        category: z.string().max(100),
         url: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
       const slug = getSlug(input.title);
-      const { title, content, url } = input;
+      const { title, content, url,category } = input;
+const categories = category.split(',').map((category) => category.trim());
+console.log(categories, 'categories');
 
       return await ctx.prisma.post.create({
         data: {
@@ -78,6 +82,13 @@ export const postRouter = createTRPCRouter({
           content: content,
           slug: slug,
           imageUrl: url,
+          categories:{
+            connectOrCreate: categories.map((category) => ({
+              where: { value: category },
+              create: { value: category },
+            })),
+
+          },          
           author: {
             connect: {
               id: ctx.session.user.id,

@@ -17,6 +17,10 @@ export type PostProps = {
     imageUrl: string;
     createdAt: Date;
     updatedAt: Date;
+    categories: {
+      id: string;
+      value: string;
+    }[];
     comments: {
       id: string;
       body: string;
@@ -28,6 +32,8 @@ export type PostProps = {
   };
 };
 export default function PostCard({ post }: PostProps) {
+  console.log(post.categories,'post categories');
+  
   const [showComments, setShowComments] = React.useState(true);
   return (
     <div
@@ -51,7 +57,21 @@ export default function PostCard({ post }: PostProps) {
           className="w-full overflow-auto text-black dark:text-slate-50"
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
+
       </div>{" "}
+      <div className="flex flex-row flex-wrap gap-2">
+        {post.categories.map((category) => {
+          return (
+            <div
+              className="mr-2 rounded-full bg-gray-200 px-3 py-1 text-sm font-semibold text-gray-700"
+              key={category.id}
+            >
+              {category.value}
+            </div>
+          );
+        })}
+      </div>
+
       <Divider />-
       <div className="flex flex-row items-center justify-between gap-2">
         <button className="flex flex-row items-center gap-2">
