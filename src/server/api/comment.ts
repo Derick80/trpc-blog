@@ -27,7 +27,6 @@ export const commentRouter = createTRPCRouter({
           },
           include: {
             user: true,
-
           },
         });
         return comments;

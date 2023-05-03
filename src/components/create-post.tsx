@@ -5,16 +5,20 @@ import React, { useCallback, useMemo, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { object, string } from "zod";
 import { api } from "~/utils/api";
-import Button from './button'
-import TipTap from './tip-tap'
+import Button from "./button";
+import TipTap from "./tip-tap";
 
 export const postSchema = object({
-  title: string().min(5,{
-    message: "Title must be at least 5 characters long",
-  }).max(100),
-  content: string().min(5, {
-    message: "Content must be at least 5 characters long",
-  }).max(1000),
+  title: string()
+    .min(5, {
+      message: "Title must be at least 5 characters long",
+    })
+    .max(100),
+  content: string()
+    .min(5, {
+      message: "Content must be at least 5 characters long",
+    })
+    .max(1000),
 });
 
 export default function CreatePost() {
@@ -27,15 +31,15 @@ export default function CreatePost() {
   async function handlePostSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const title = formData.get('title')?.toString();
-    const content = formData.get('content')?.toString();
-    if(!title || !content) return;
+    const title = formData.get("title")?.toString();
+    const content = formData.get("content")?.toString();
+    if (!title || !content) return;
     const data = {
       title,
       content,
       url,
     };
-    
+
     try {
       await postSchema.parseAsync(data);
     } catch (error) {
@@ -44,7 +48,7 @@ export default function CreatePost() {
       return setError(error);
     }
     await mutateAsync(data);
-    await router.push("/posts") 
+    await router.push("/posts");
   }
 
   const [presignedUrl, setPresignedUrl] = useState<string | null>(null);
@@ -118,22 +122,20 @@ export default function CreatePost() {
           <input
             type="text"
             className="text-black"
-            
             name="title"
-
-         onChange={(e) => setTitle(e.target.value)} />
-          <label htmlFor="Content">Content</label>
-          <TipTap
-            
+            onChange={(e) => setTitle(e.target.value)}
           />
-
-          
+          <label htmlFor="Content">Content</label>
+          <TipTap />
 
           {error && JSON.stringify(error)}
-          <input type="text"
+          <input
+            type="text"
             className="text-black"
-          name="url" value={url || ""} />
-          <Button variant='primary_filled' type="submit">
+            name="url"
+            value={url || ""}
+          />
+          <Button variant="primary_filled" type="submit">
             Submit
           </Button>
         </form>
