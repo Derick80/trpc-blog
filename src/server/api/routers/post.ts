@@ -16,6 +16,9 @@ const getSlug = (title: string) =>
 export const postRouter = createTRPCRouter({
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.post.findMany({
+      where: {
+        published: true,
+      },
       orderBy: {
         createdAt: "desc",
       },
@@ -103,6 +106,7 @@ console.log(categories, 'categories');
         postId: z.string().cuid(),
         title: z.string().max(100),
         content: z.string().min(10),
+        categories: z.string().max(100).array(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -113,8 +117,18 @@ console.log(categories, 'categories');
         data: {
           title: input.title,
           content: input.content,
+          categories: {
+            set: input.categories.map((category) => ({
+              value: category,
+            })),
+            
+
+
+          },
+
         },
       });
+
     }),
   deletePost: protectedProcedure
     .input(
@@ -143,6 +157,7 @@ console.log(categories, 'categories');
         },
         include: {
           comments: true,
+          categories: true,
         },
       });
     }),
