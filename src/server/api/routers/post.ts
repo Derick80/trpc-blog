@@ -27,12 +27,33 @@ export const postRouter = createTRPCRouter({
         content: true,
         createdAt: true,
         updatedAt: true,
+        published: true,
+        authorId: true,
+        comments: {
+          select: {
+            id: true,
+            body: true,
+            createdAt: true,
+            updatedAt: true,
+            userId: true,
+            postId: true,
+            parentId: true,
+          },
+        },
+        _count:{
+          select:{
+            comments: true,
+            likes: true
+          }
+        },
+        likes: true,
         author: {
           select: {
             id: true,
             name: true,
             image: true,
             email: true,
+            emailVerified: true,
           },
         },
       },
@@ -109,6 +130,67 @@ export const postRouter = createTRPCRouter({
         where: {
           id: input.postId,
         },
+        include: {
+          comments: true,
+        },
       });
     }),
+    likePost: protectedProcedure.input(z.object({
+      postId: z.string().cuid()
+    })).mutation(async ({ctx, input}) => {
+        const likedPost = await ctx.prisma.like.findUnique({
+          where: {
+            postId_userId: {
+              postId: input.postId,
+                          userId: ctx.session.user.id
+          }
+
+
+          }
+        })
+
+       if(likedPost === null){
+        await ctx.prisma.like.create({
+          data: {
+            user: {
+              connect: {
+                id: ctx.session.user.id
+              }
+            },
+            post: {
+              connect: {
+                id: input.postId
+              }
+            }
+          }
+        })
+    const updatedPost = await ctx.prisma.post.findUniqueOrThrow({
+          where: {
+            id: input.postId
+          },
+          include:{
+            _count:{
+              select:{
+                likes: true
+              }
+            }
+
+          }
+
+})
+
+const {_count, ...postData} = updatedPost
+return {
+  updatedPost:{
+    ...postData,
+    likesCount: _count.likes,
+    likedByUser: likedPost === null
+  }
+}
+
+       }
+    }),
+
+
+
 });

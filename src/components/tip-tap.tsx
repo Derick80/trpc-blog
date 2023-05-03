@@ -1,13 +1,15 @@
 import { Button } from "@mantine/core";
 import { RichTextEditor } from "@mantine/tiptap";
 import Link from "@tiptap/extension-link";
-import {  useEditor } from "@tiptap/react";
+import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { useCallback } from "react";
 import Image from "@tiptap/extension-image";
 import { ImageIcon } from "@radix-ui/react-icons";
 
-const TipTap = ({ content }: { content?: string }) => {
+const TipTap = ({ content, onChange }: { content?: string, 
+onChange?: (args:any) => void
+}) => {
   const editor = useEditor({
     content,
     extensions: [
@@ -81,7 +83,7 @@ const TipTap = ({ content }: { content?: string }) => {
         <RichTextEditor.Content />
       </RichTextEditor>
 
-      <input type="hidden" name="body" value={editor?.getHTML()} />
+      <input type="hidden" name="content" value={editor?.getHTML()} />
     </>
   );
 };

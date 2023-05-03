@@ -33,7 +33,6 @@ export default function PostIdPage() {
     const formData = new FormData(
       event.currentTarget as HTMLFormElement
     ).entries();
-    console.log(formData);
 
     event.preventDefault();
     const data = { title, content, postId };
@@ -44,7 +43,7 @@ export default function PostIdPage() {
   return (
     <Container size="md">
       {edit ? (
-        <form onSubmit={handleEdit} className="flex flex-col space-y-4">
+        <form onSubmit={handleEdit} className="text-black flex flex-col space-y-4">
           <label htmlFor="title">Title</label>
           <input
             type="text"
