@@ -12,7 +12,7 @@ import LikeContainer from "./like-container";
 export type PostProps = {
   post: Post & {
     _count: {
-      likesCount: number;
+      likes: number;
     };
     author: Omit<User, "emailVerified">;
     comments: CommentWithChildren[];
@@ -79,7 +79,7 @@ export default function PostCard({ post }: PostProps) {
         )}
       </div>
       <Divider />
-      <LikeContainer likesCount={post._count?.likesCount} />
+      <LikeContainer likesCount={post._count?.likes} />
       <BlogAction postId={post.id} />
       {showComments && <CommentSection postId={post.id} />}
     </div>
