@@ -10,7 +10,7 @@ import { ChatBubbleIcon, StarIcon } from "@radix-ui/react-icons";
 import LikeContainer from "./like-container";
 
 export type PostProps = {
-  post: unknown & {
+  post: Post & {
     _count: {
       likes: number;
     };

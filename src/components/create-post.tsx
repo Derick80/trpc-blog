@@ -9,29 +9,32 @@ import Button from './button'
 import TipTap from './tip-tap'
 
 export const postSchema = object({
-  title: string().min(10,{
-    message: "Title must be at least 10 characters long",
+  title: string().min(5,{
+    message: "Title must be at least 5 characters long",
   }).max(100),
-  content: string().min(10, {
-    message: "Content must be at least 10 characters long",
+  content: string().min(5, {
+    message: "Content must be at least 5 characters long",
   }).max(1000),
 });
 
 export default function CreatePost() {
   const router = useRouter();
   const [title, setTitle] = React.useState<string>("");
-  const [content, setContent] = React.useState("");
   const [error, setError] = React.useState();
 
   const { mutateAsync, isLoading, isSuccess } = api.post.new.useMutation();
 
   async function handlePostSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget as HTMLFormElement).entries();
-    console.log(Object.fromEntries(formData),'formData');
-
-    const data = { title, content, url }
-    console.log(data,'content');
+    const formData = new FormData(e.currentTarget);
+    const title = formData.get('title')?.toString();
+    const content = formData.get('content')?.toString();
+    if(!title || !content) return;
+    const data = {
+      title,
+      content,
+      url,
+    };
     
     try {
       await postSchema.parseAsync(data);
@@ -41,7 +44,7 @@ export default function CreatePost() {
       return setError(error);
     }
     await mutateAsync(data);
-    isSuccess ? await router.push("/posts") : null;
+    await router.push("/posts") 
   }
 
   const [presignedUrl, setPresignedUrl] = useState<string | null>(null);
@@ -112,15 +115,16 @@ export default function CreatePost() {
         }}
       >
         <form onSubmit={(e) => void handlePostSubmit(e)}>
-          <TextInput
+          <input
+            type="text"
+            className="text-black"
+            
             name="title"
 
-          label="Title" onChange={(e) => setTitle(e.target.value)} />
+         onChange={(e) => setTitle(e.target.value)} />
           <label htmlFor="Content">Content</label>
           <TipTap
             
-              content="content"
-            onChange={(e) => setContent(e.currentTarget.value)}
           />
 
           
