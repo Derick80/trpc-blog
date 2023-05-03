@@ -10,7 +10,7 @@ import { ChatBubbleIcon, StarIcon } from "@radix-ui/react-icons";
 import LikeContainer from "./like-container";
 
 export type PostProps = {
-  post: Post & {
+  post: unknown & {
     _count: {
       likes: number;
     };
@@ -102,7 +102,7 @@ function BlogAction({ postId }: { postId: string }) {
 
   return (
     <div className="flex flex-row gap-2">
-      <form onSubmit={(e) => handleDelete({ e, postId })}>
+      <form onSubmit={(e) => void handleDelete({ e, postId })}>
         <input type="hidden" name="postId" value={postId} />
         <button type="submit">Delete</button>
       </form>

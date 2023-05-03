@@ -38,6 +38,8 @@ export const postRouter = createTRPCRouter({
             userId: true,
             postId: true,
             parentId: true,
+            user: true,
+            children: true
           },
         },
         _count:{
