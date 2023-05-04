@@ -25,15 +25,14 @@ export default function CreatePost() {
   const router = useRouter();
   const [title, setTitle] = React.useState<string>("");
   const [error, setError] = React.useState();
-const {data, isLoading} = api.categories.getAll.useQuery()
+  const { data, isLoading } = api.categories.getAll.useQuery();
 
   const { mutateAsync, isSuccess } = api.post.new.useMutation();
-  const [selected, setSelected] = useState<string>("")
+  const [selected, setSelected] = useState<string>("");
   const [categories, setCategories] = useState<string[]>(
     data?.map((category) => category.value) || []
-  
-  )
-  
+  );
+
   async function handlePostSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -151,12 +150,11 @@ const {data, isLoading} = api.categories.getAll.useQuery()
               </option>
             ))}
           </select> */}
-<MultiSelect 
-data={categories}
-shadow="sm"
-onChange={(e) => setSelected(e.join(","))}
-
-/>
+          <MultiSelect
+            data={categories}
+            shadow="sm"
+            onChange={(e) => setSelected(e.join(","))}
+          />
 
           <Button variant="primary_filled" type="submit">
             Submit

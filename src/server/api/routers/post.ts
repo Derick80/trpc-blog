@@ -75,9 +75,9 @@ export const postRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       const slug = getSlug(input.title);
-      const { title, content, url,category } = input;
-const categories = category.split(',').map((category) => category.trim());
-console.log(categories, 'categories');
+      const { title, content, url, category } = input;
+      const categories = category.split(",").map((category) => category.trim());
+      console.log(categories, "categories");
 
       return await ctx.prisma.post.create({
         data: {
@@ -85,13 +85,12 @@ console.log(categories, 'categories');
           content: content,
           slug: slug,
           imageUrl: url,
-          categories:{
+          categories: {
             connectOrCreate: categories.map((category) => ({
               where: { value: category },
               create: { value: category },
             })),
-
-          },          
+          },
           author: {
             connect: {
               id: ctx.session.user.id,
@@ -121,14 +120,9 @@ console.log(categories, 'categories');
             set: input.categories.map((category) => ({
               value: category,
             })),
-            
-
-
           },
-
         },
       });
-
     }),
   deletePost: protectedProcedure
     .input(

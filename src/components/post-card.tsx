@@ -32,8 +32,8 @@ export type PostProps = {
   };
 };
 export default function PostCard({ post }: PostProps) {
-  console.log(post.categories,'post categories');
-  
+  console.log(post.categories, "post categories");
+
   const [showComments, setShowComments] = React.useState(true);
   return (
     <div
@@ -57,7 +57,6 @@ export default function PostCard({ post }: PostProps) {
           className="w-full overflow-auto text-black dark:text-slate-50"
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
-
       </div>{" "}
       <div className="flex flex-row flex-wrap gap-2">
         {post.categories.map((category) => {
@@ -71,7 +70,6 @@ export default function PostCard({ post }: PostProps) {
           );
         })}
       </div>
-
       <Divider />-
       <div className="flex flex-row items-center justify-between gap-2">
         <button className="flex flex-row items-center gap-2">
