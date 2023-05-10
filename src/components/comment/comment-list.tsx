@@ -5,7 +5,7 @@ import React from "react";
 import { api, type CommentWithChildren } from "~/utils/api";
 import CommentForm from "./comment-form";
 import { ChevronDownIcon, ChevronUpIcon } from "@radix-ui/react-icons";
-import { Comment } from "~/utils/api";
+import { Comment as CommentType } from "~/utils/api";
 import { User } from "@prisma/client";
 import CommentLikeContainer from "../comment-like-container";
 
@@ -230,7 +230,7 @@ function Comment({
       </div>
       {replies && comment.children && comment.children.length > 0 && (
         <div className="flex w-full flex-row justify-between gap-2 indent-4">
-          <ListComments postId={comment.postId} comments={data} />
+          <ListComments postId={comment.postId} comments={comment.children} />
         </div>
       )}
     </>

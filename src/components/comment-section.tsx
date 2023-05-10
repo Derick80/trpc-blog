@@ -17,7 +17,7 @@ export default function CommentSection({ postId }: { postId?: string }) {
 
   const rootComments = data?.filter(
     (comment) => !comment.parentId
-  ) as CommentWithChildren[];
+  ) as CommentWithChildren[]
 
   return (
     <div className="items-centser flex flex-col justify-center gap-2 rounded-xl bg-slate-50 p-2 text-black  dark:bg-black dark:text-slate-50">

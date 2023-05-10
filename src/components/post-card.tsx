@@ -16,10 +16,7 @@ type PostProps = {
         value: string;
       }[];
     }
-    &
-
-
-
+    
 };
 
 
