@@ -4,6 +4,7 @@ import { TrashIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/router";
 import React from "react";
 import Button from "~/components/button";
+import PostCard from "~/components/post-card";
 import TipTap from "~/components/tip-tap";
 
 import { api } from "~/utils/api";
@@ -64,27 +65,27 @@ export default function PostIdPage() {
   return (
     <div className="flex flex-col gap-4">
       {edit ? (
-        <form onSubmit={handleEdit} className="flex flex-col space-y-4 ">
-          <label htmlFor="title">Title</label>
+        <form onSubmit={handleEdit} className="flex flex-col gap-4 rounded-md p-1">
+          <label
+            className="text-left"
+          htmlFor="title">Title</label>
           <input
             type="text"
+            className="rounded-md text-black p-1"
             name="title"
             defaultValue={data?.title}
             onChange={(e) => setTitle(e.target.value)}
           />
           <label htmlFor="content">Content</label>
           <TipTap content={data?.content} />
-
+        <label htmlFor="categories">Categories</label>
           <MultiSelect
             multiple
-            data={categories}
-            value={selected.map((category) => {
-              return category.valueOf();
-            })}
+            data={cats?.map((category) => category.value) || []}
+            value={selected}
             onChange={(value) => {
               setSelected(value);
             }}
-            label="Categories"
             placeholder="Select categories"
           />
           <Button variant="primary_filled" size="base" type="submit">
@@ -97,47 +98,17 @@ export default function PostIdPage() {
             <div>Loading ...</div>
           ) : (
             <>
+             <PostCard post={data} />
               <div className="flex flex-row gap-2">
-                <div className="mr-2 rounded-full bg-gray-200 px-3 py-1 text-sm font-semibold text-gray-700">
-                  <h3 className="text-2xl font-bold  dark:text-slate-50">
-                    {data?.title}
-                  </h3>
+                <Button
+                  variant="primary_filled"
+                  size="base"
+                  onClick={() => setEdit(!edit)}
+                >
+                  Edit
+                </Button>
+                
                 </div>
-                <div className="flex flex-row gap-2">
-                  {data?.content ? (
-                    <div dangerouslySetInnerHTML={{ __html: data?.content }} />
-                  ) : null}{" "}
-                </div>
-                <div className="flex flex-row gap-2">
-                  {data?.categories?.map((category) => (
-                    <div
-                      className="mr-2 inline-block rounded-full bg-gray-200 px-2 py-1 text-sm font-semibold text-gray-700"
-                      key={category.id}
-                    >
-                      {category.value}
-                    </div>
-                  ))}
-                </div>
-
-                <div className="flex flex-row gap-2">
-                  <div className="flex justify-between">
-                    <Button
-                      variant="primary_filled"
-                      size="base"
-                      onClick={() => setEdit(!edit)}
-                    >
-                      Edit
-                    </Button>
-                    <Button
-                      variant="icon_filled"
-                      size="base"
-                      onClick={handleDelete}
-                    >
-                      <TrashIcon />
-                    </Button>
-                  </div>
-                </div>
-              </div>
             </>
           )}
         </>

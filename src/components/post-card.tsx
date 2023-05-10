@@ -6,8 +6,10 @@ import Link from "next/link";
 import { api } from "~/utils/api";
 import CommentSection from "./comment-section";
 import React from "react";
-import { ChatBubbleIcon, StarIcon } from "@radix-ui/react-icons";
+import { ChatBubbleIcon, StarIcon, TrashIcon } from "@radix-ui/react-icons";
 import LikeContainer from "./like-container";
+import Button from "./button";
+import CommentForm from "./comment/comment-form";
 
 export type PostProps = {
   post: {
@@ -39,7 +41,7 @@ export default function PostCard({ post }: PostProps) {
       key={post.id}
     >
       <Link href={`/posts/${post.id}`} passHref>
-        <h3 className="text-2xl font-bold dark:text-slate-50">{post.title}</h3>
+        <h3 className="text-2xl font-bold dark:text-slate-50 text-left">{post.title}</h3>
       </Link>
       <div className="flex flex-row gap-2">
         <Image
@@ -51,11 +53,12 @@ export default function PostCard({ post }: PostProps) {
         />
         <div>
           <div
-            className="w-full overflow-auto  dark:text-slate-50"
+            className="w-full overflow-auto text-left  dark:text-slate-50"
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
         </div>
       </div>
+      <Divider />
       <div className="flex flex-row flex-wrap gap-2">
         {post.categories.map((category) => {
           return (
@@ -68,38 +71,9 @@ export default function PostCard({ post }: PostProps) {
           );
         })}
       </div>
-      <Divider />-
-      <div className="flex flex-row items-center justify-between gap-2">
-        <button className="flex flex-row items-center gap-2">
-          <StarIcon />
-          <p className=" dark:text-slate-50">{post.comments.length}</p>
-        </button>
-        <button
-          className="flex flex-row items-center gap-2"
-          onClick={() => setShowComments(!showComments)}
-        >
-          <ChatBubbleIcon />
-          <p className=" dark:text-slate-50"></p>
-        </button>
-
-        {post.author && (
-          <div className="flex flex-row gap-2">
-            <Tooltip label={post.author.name}>
-              {post.author.image && (
-                <Avatar
-                  size="sm"
-                  radius="xl"
-                  src={post.author.image}
-                  alt={post.author.email}
-                />
-              )}
-            </Tooltip>
-            <Text>{dayjs(post.createdAt).format("MMM D")}</Text>
-          </div>
-        )}
-      </div>
       <Divider />
-      <LikeContainer postId={post.id} />
+     
+    
       <BlogAction postId={post.id} />
       {showComments && <CommentSection postId={post.id} />}
     </div>
@@ -121,10 +95,25 @@ function BlogAction({ postId }: { postId: string }) {
   };
 
   return (
-    <div className="flex flex-row gap-2">
+    <div className="flex flex-row gap-2 items-center">
+        <LikeContainer postId={postId} />
+
+        <div className="flex flex-grow"/> 
+
+        <Link href={`/posts/${postId}`} passHref>
+          <Button variant="icon_text_unfilled" size="tiny">
+            <ChatBubbleIcon />
+          </Button>
+        </Link>
+          
       <form onSubmit={(e) => void handleDelete({ e, postId })}>
         <input type="hidden" name="postId" value={postId} />
-        <button type="submit">Delete</button>
+        <Button 
+        variant="icon_text_unfilled"
+        size="tiny"
+        type="submit">
+          <TrashIcon />
+        </Button>
       </form>
     </div>
   );

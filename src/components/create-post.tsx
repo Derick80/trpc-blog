@@ -1,4 +1,4 @@
-import { Box, MultiSelect } from "@mantine/core";
+import { MultiSelect } from "@mantine/core";
 import axios from "axios";
 import { useRouter } from "next/router";
 import React, { useCallback, useMemo, useState } from "react";
@@ -119,24 +119,27 @@ export default function CreatePost() {
 
   return (
     <>
-      <Box
-        sx={{
-          width: "50%",
-          margin: "auto",
-        }}
-      >
-        <form onSubmit={(e) => void handlePostSubmit(e)}>
+      
+        <form onSubmit={(e) => void handlePostSubmit(e)}
+          className="flex flex-col gap-2 rounded-md"
+        >
+          <label
+          className="text-left"
+          htmlFor="Title">Title</label>
+
           <input
             type="text"
-            className=""
+            className="text-black rounded-md"
             name="title"
             onChange={(e) => setTitle(e.target.value)}
           />
-          <label htmlFor="Content">Content</label>
+          <label
+          className="text-left"
+          htmlFor="Content">Content</label>
           <TipTap />
 
           {error && JSON.stringify(error)}
-          <input type="text" className="" name="url" value={url || ""} />
+          <input type="text" className="text-black" name="url" value={url || ""} />
           <label htmlFor="categories">Categories</label>
           {/* <select multiple name="categories" id="categories">
             {data?.map((category) => (
@@ -146,8 +149,15 @@ export default function CreatePost() {
             ))}
           </select> */}
           <MultiSelect
-            data={categories}
+            data={data?.map((category) => ({
+              value: category.value,
+              label: category.value,
+            }))}
+          
             shadow="sm"
+            placeholder="Select categories"
+            label="Categories"
+            value={selected.split(",")}
             onChange={(e) => setSelected(e.join(","))}
           />
 
@@ -188,7 +198,6 @@ export default function CreatePost() {
             Upload
           </button>
         </section>
-      </Box>
     </>
   );
 }

@@ -1,4 +1,3 @@
-import { Avatar, Box, Paper, Group, Text, Divider } from "@mantine/core";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import Button from "~/components/button";
@@ -6,7 +5,6 @@ import React from "react";
 import { api, type CommentWithChildren } from "~/utils/api";
 import CommentForm from "./comment-form";
 import { ChevronDownIcon, ChevronUpIcon } from "@radix-ui/react-icons";
-import { isError } from "@tanstack/react-query";
 import { Comment } from "~/utils/api";
 import { User } from "@prisma/client";
 import CommentLikeContainer from "../comment-like-container";
