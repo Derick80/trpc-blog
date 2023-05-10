@@ -242,7 +242,7 @@ export default function ListComments({
   comments,
   postId,
 }: {
-  comments: Comment[] & User[] & { children: Comment[] };
+  comments: CommentWithChildren[];
   postId: string;
   // This is the array of comments
 }) {
