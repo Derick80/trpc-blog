@@ -128,7 +128,7 @@ export default function CreatePost() {
         <form onSubmit={(e) => void handlePostSubmit(e)}>
           <input
             type="text"
-            className="text-black"
+            className=""
             name="title"
             onChange={(e) => setTitle(e.target.value)}
           />
@@ -136,12 +136,7 @@ export default function CreatePost() {
           <TipTap />
 
           {error && JSON.stringify(error)}
-          <input
-            type="text"
-            className="text-black"
-            name="url"
-            value={url || ""}
-          />
+          <input type="text" className="" name="url" value={url || ""} />
           <label htmlFor="categories">Categories</label>
           {/* <select multiple name="categories" id="categories">
             {data?.map((category) => (

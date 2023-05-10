@@ -1,8 +1,7 @@
 import { useRouter } from "next/router";
-import { api } from "~/utils/api";
+import { CommentWithChildren, api } from "~/utils/api";
 import CommentForm from "./comment/comment-form";
 import ListComments from "./comment/comment-list";
-import formComments from "./format-comments";
 
 export default function CommentSection({ postId }: { postId?: string }) {
   const router = useRouter();
@@ -16,12 +15,16 @@ export default function CommentSection({ postId }: { postId?: string }) {
     }
   );
 
+  const rootComments = data?.filter(
+    (comment) => !comment.parentId
+  ) as CommentWithChildren[];
+
   return (
-    <div className="items-centser flex flex-col justify-center gap-2 rounded-xl bg-slate-50 p-2 text-black dark:bg-black dark:text-slate-50">
+    <div className="items-centser flex flex-col justify-center gap-2 rounded-xl bg-slate-50 p-2 text-black  dark:bg-black dark:text-slate-50">
       <CommentForm postId={postId || (router.query.id as string)} />
 
       <ListComments
-        comments={formComments(data || [])}
+        comments={rootComments || []}
         postId={postId || (router.query.id as string)}
       />
     </div>

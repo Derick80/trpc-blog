@@ -42,7 +42,7 @@ export default function NewCategoryPage() {
       <form onSubmit={(e) => void handleCategorySubmit(e)}>
         <label htmlFor="value">Category Name</label>
         <input
-          className="text-black"
+          className=""
           type="text"
           name="value"
           id="value"

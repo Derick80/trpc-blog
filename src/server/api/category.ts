@@ -7,6 +7,10 @@ export const categoryRouter = createTRPCRouter({
       orderBy: {
         value: "asc",
       },
+      select: {
+        id: true,
+        value: true,
+      },
     });
   }),
   getSingle: publicProcedure

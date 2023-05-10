@@ -32,32 +32,30 @@ export type PostProps = {
   };
 };
 export default function PostCard({ post }: PostProps) {
-  console.log(post.categories, "post categories");
-
   const [showComments, setShowComments] = React.useState(true);
   return (
     <div
-      className="flex flex-col gap-4 overflow-auto rounded-xl border-2 p-2"
+      className="hover:border-bg-gray-700  flex flex-col gap-4 overflow-auto rounded-xl p-2 shadow-xl hover:border"
       key={post.id}
     >
       <Link href={`/posts/${post.id}`} passHref>
-        <h3 className="text-2xl font-bold text-black dark:text-slate-50">
-          {post.title}
-        </h3>
+        <h3 className="text-2xl font-bold dark:text-slate-50">{post.title}</h3>
       </Link>
-      <Image
-        className="hidden w-fit rounded-xl md:block"
-        src={post.imageUrl}
-        alt={post.title}
-        width={100}
-        height={100}
-      />
-      <div>
-        <div
-          className="w-full overflow-auto text-black dark:text-slate-50"
-          dangerouslySetInnerHTML={{ __html: post.content }}
+      <div className="flex flex-row gap-2">
+        <Image
+          className="hidden w-fit rounded-xl md:block"
+          src={post.imageUrl}
+          alt={post.title}
+          width={500}
+          height={500}
         />
-      </div>{" "}
+        <div>
+          <div
+            className="w-full overflow-auto  dark:text-slate-50"
+            dangerouslySetInnerHTML={{ __html: post.content }}
+          />
+        </div>
+      </div>
       <div className="flex flex-row flex-wrap gap-2">
         {post.categories.map((category) => {
           return (
@@ -74,16 +72,14 @@ export default function PostCard({ post }: PostProps) {
       <div className="flex flex-row items-center justify-between gap-2">
         <button className="flex flex-row items-center gap-2">
           <StarIcon />
-          <p className="text-black dark:text-slate-50">
-            {post.comments.length}
-          </p>
+          <p className=" dark:text-slate-50">{post.comments.length}</p>
         </button>
         <button
           className="flex flex-row items-center gap-2"
           onClick={() => setShowComments(!showComments)}
         >
           <ChatBubbleIcon />
-          <p className="text-black dark:text-slate-50"></p>
+          <p className=" dark:text-slate-50"></p>
         </button>
 
         {post.author && (
@@ -103,7 +99,7 @@ export default function PostCard({ post }: PostProps) {
         )}
       </div>
       <Divider />
-      <LikeContainer likesCount={post.likes.length} />
+      <LikeContainer postId={post.id} />
       <BlogAction postId={post.id} />
       {showComments && <CommentSection postId={post.id} />}
     </div>

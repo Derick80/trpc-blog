@@ -1,10 +1,9 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { Card, Container, MultiSelect, Skeleton, Title } from "@mantine/core";
+import { MultiSelect } from "@mantine/core";
 import { TrashIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/router";
 import React from "react";
 import Button from "~/components/button";
-import PostCard from "~/components/post-card";
 import TipTap from "~/components/tip-tap";
 
 import { api } from "~/utils/api";
@@ -63,12 +62,9 @@ export default function PostIdPage() {
   };
 
   return (
-    <Container size="md">
+    <div className="flex flex-col gap-4">
       {edit ? (
-        <form
-          onSubmit={handleEdit}
-          className="flex flex-col space-y-4 text-black"
-        >
+        <form onSubmit={handleEdit} className="flex flex-col space-y-4 ">
           <label htmlFor="title">Title</label>
           <input
             type="text"
@@ -98,17 +94,21 @@ export default function PostIdPage() {
       ) : (
         <>
           {isLoading ? (
-            <Skeleton height={200} />
+            <div>Loading ...</div>
           ) : (
             <>
-              <Card shadow="sm" padding="xl" radius="md">
-                <Card.Section>
-                  <Title order={1}>{data?.title}</Title>
-                </Card.Section>
-                <Card.Section>
-                  <div dangerouslySetInnerHTML={{ __html: data?.content }} />
-                </Card.Section>
-                <Card.Section>
+              <div className="flex flex-row gap-2">
+                <div className="mr-2 rounded-full bg-gray-200 px-3 py-1 text-sm font-semibold text-gray-700">
+                  <h3 className="text-2xl font-bold  dark:text-slate-50">
+                    {data?.title}
+                  </h3>
+                </div>
+                <div className="flex flex-row gap-2">
+                  {data?.content ? (
+                    <div dangerouslySetInnerHTML={{ __html: data?.content }} />
+                  ) : null}{" "}
+                </div>
+                <div className="flex flex-row gap-2">
                   {data?.categories?.map((category) => (
                     <div
                       className="mr-2 inline-block rounded-full bg-gray-200 px-2 py-1 text-sm font-semibold text-gray-700"
@@ -117,9 +117,9 @@ export default function PostIdPage() {
                       {category.value}
                     </div>
                   ))}
-                </Card.Section>
+                </div>
 
-                <Card.Section>
+                <div className="flex flex-row gap-2">
                   <div className="flex justify-between">
                     <Button
                       variant="primary_filled"
@@ -136,12 +136,12 @@ export default function PostIdPage() {
                       <TrashIcon />
                     </Button>
                   </div>
-                </Card.Section>
-              </Card>
+                </div>
+              </div>
             </>
           )}
         </>
       )}
-    </Container>
+    </div>
   );
 }

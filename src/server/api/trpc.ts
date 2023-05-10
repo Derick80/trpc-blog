@@ -16,7 +16,7 @@
  */
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 import { type Session } from "next-auth";
-
+import type { Comment as PrismaComment } from "@prisma/client";
 import { getServerAuthSession } from "~/server/auth";
 import { prisma } from "~/server/db";
 import { s3 } from "../aws/s3";
@@ -121,4 +121,17 @@ const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
  */
 export const protectedProcedure = t.procedure.use(enforceUserIsAuthed);
 
-1;
+export type Comment = PrismaComment & {
+  user: {
+    id: string;
+    name: string;
+    image: string;
+    email: string;
+  };
+
+  children: Comment[];
+};
+
+export type CommentWithChildren = Comment & {
+  children: CommentWithChildren[];
+};

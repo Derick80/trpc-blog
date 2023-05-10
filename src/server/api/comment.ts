@@ -27,6 +27,7 @@ export const commentRouter = createTRPCRouter({
           },
           include: {
             user: true,
+            children: true,
           },
         });
         return comments;
@@ -36,10 +37,41 @@ export const commentRouter = createTRPCRouter({
         });
       }
     }),
+  getChildComments: publicProcedure
+    .input(
+      z.object({
+        parentId: z.string().max(100),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const { parentId } = input;
+      try {
+        const comments = await ctx.prisma.comment.findMany({
+          where: {
+            parent: {
+              id: parentId,
+            },
+          },
+          orderBy: {
+            createdAt: "desc",
+          },
+          include: {
+            user: true,
+            children: true,
+          },
+        });
+        return comments;
+      } catch (err) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+        });
+      }
+    }),
+
   create: protectedProcedure
     .input(
       z.object({
-        body: z.string().min(10),
+        body: z.string().min(3),
         postId: z.string().max(100),
         parentId: z.string().optional(),
       })
@@ -68,6 +100,10 @@ export const commentRouter = createTRPCRouter({
               },
             }),
           },
+          include: {
+            user: true,
+            children: true,
+          },
         });
 
         return comment;
@@ -81,7 +117,7 @@ export const commentRouter = createTRPCRouter({
     .input(
       z.object({
         id: z.string().max(100),
-        body: z.string().min(10),
+        body: z.string().min(3),
       })
     )
     .mutation(async ({ ctx, input }) => {
