@@ -53,8 +53,14 @@ export default function PostCard({ post }: PostProps ) {
               className="mr-2 rounded-full bg-gray-200 px-3 py-1 text-sm font-semibold text-gray-700"
               key={category.id}
             >
-              {category.value}
-            </div>
+<Link 
+href={`/posts/categories/${category.value}`}
+passHref
+>
+{category.value}
+
+</Link>
+</div>
           );
         })}
       </div>

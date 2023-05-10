@@ -66,8 +66,6 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
  */
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
-import { User } from "@prisma/client";
-import { InferQueryOptions, InferQueryResult } from "@trpc/react-query/dist/utils/inferReactQueryProcedure";
 
 const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: superjson,

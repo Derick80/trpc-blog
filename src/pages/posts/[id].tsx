@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import React from "react";
 import Button from "~/components/button";
 import PostCard from "~/components/post-card";
+import SelectBox from "~/components/select";
 import TipTap from "~/components/tip-tap";
 
 import { api } from "~/utils/api";
@@ -27,9 +28,8 @@ export default function PostIdPage() {
   console.log(selectedCategory, "selectedCategory");
 
   const [selected, setSelected] = React.useState(
-    selectedCategory?.map((category) => {
-      return category.valueOf();
-    }) || []
+   selectedCategory
+
   );
   console.log(selected, "selected");
 
@@ -40,6 +40,7 @@ export default function PostIdPage() {
   const [edit, setEdit] = React.useState(false);
   const [title, setTitle] = React.useState<string>(data?.title as string);
   const [content, setContent] = React.useState(data?.content as string);
+
 
   const { mutateAsync: deletePost } = api.post.deletePost.useMutation();
 
@@ -56,11 +57,13 @@ export default function PostIdPage() {
     const formData = new FormData(event.currentTarget);
     const title = formData.get("title")?.toString();
     const content = formData.get("content")?.toString();
+    const postId = formData.get("postId")?.toString() as string;
 
-    if (!title || !content || !selected) return;
+
+    if (!title || !content || !postId ) return;
 
     event.preventDefault();
-    const data = { title, content, postId, categories: selected };
+    const data = { title, content, postId, categories: selected  };
 
     await updatePost(data);
     isLoading ? null : await router.push("/posts");
@@ -70,6 +73,7 @@ export default function PostIdPage() {
     <div className="flex flex-col gap-4">
       {edit ? (
         <form onSubmit={handleEdit} className="flex flex-col gap-4 rounded-md p-1">
+          <input type="hidden" name="postId" value={postId} />
           <label
             className="text-left"
           htmlFor="title">Title</label>
@@ -83,15 +87,31 @@ export default function PostIdPage() {
           <label htmlFor="content">Content</label>
           <TipTap content={data?.content} />
         <label htmlFor="categories">Categories</label>
+          {/* <SelectBox options={categories.map((
+            category
+          ) => ({ id: category, value: category, label: category }
+
+          ))} picked={
+            selected.map((category) => ({ id: category, value: category, label: category }
+
+            ))
+            }
+            name="categories"
+
+          multiple={true} /> */}
           <MultiSelect
-            multiple
             data={cats?.map((category) => category.value) || []}
             value={selected}
+
+      
             onChange={(value) => {
               setSelected(value);
             }}
-            placeholder="Select categories"
+            placeholder="Pick categories"
+            multiple
+            required
           />
+          
           <Button variant="primary_filled" size="base" type="submit">
             Update
           </Button>
