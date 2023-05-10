@@ -53,7 +53,7 @@ function CommentActions({
     <div className="flex flex-col gap-2">
       <div className="flex flex-row items-center gap-2">
         <p className="text-xs font-semibold">{getReplyCountText(replyCount)}</p>
-       
+
         {isEditable && (
           <Button
             variant="primary_filled"
@@ -132,7 +132,7 @@ function Comment({
 
   return (
     <>
-      <div className="flex flex-col justify-between gap-2 rounded-md bg-slate-400 p-1">
+      <div className="flex flex-col justify-between gap-2 rounded-md  p-1">
         {editing ? (
           <div className="flex flex-row items-center gap-2">
             <form
@@ -141,7 +141,7 @@ function Comment({
               ref={formRef}
             >
               <input
-                type="text"
+                type="hidden"
                 name="id"
                 value={comment.id}
                 className="text-black"
@@ -201,13 +201,15 @@ function Comment({
         )}
 
         <div className="flex flex-row items-center gap-4">
-        <CommentLikeContainer commentId={comment.id} />
-          <p className="text-xs font-semibold">{comment.user.name} commented</p>
+          <CommentLikeContainer commentId={comment.id} />
+          <p className="text-xs font-semibold">
+            {comment?.user?.name} commented
+          </p>
 
           <p className="text-xs font-semibold">
             {dayjs(comment.createdAt).format("MMMM D, YYYY [at] h:mm A")}
           </p>
-          
+
           <div className="flex flex-grow" />
           <div className="flex flex-row items-center gap-2">
             {comment.children?.length > 0 && (
@@ -228,9 +230,9 @@ function Comment({
           </div>
         </div>
       </div>
-      {replies && comment.children && comment.children.length > 0 && (
+      {replies && data && data.length > 0 && (
         <div className="flex w-full flex-row justify-between gap-2 indent-4">
-          <ListComments postId={comment.postId} comments={comment.children} />
+          <ListComments postId={comment.postId} comments={data} />
         </div>
       )}
     </>

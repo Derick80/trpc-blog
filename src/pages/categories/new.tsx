@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import React from "react";
 import { object, string } from "zod";
+import Button from "~/components/button";
 import { api } from "~/utils/api";
 
 export const catergorySchema = object({
@@ -39,10 +40,15 @@ export default function NewCategoryPage() {
 
   return (
     <>
-      <form onSubmit={(e) => void handleCategorySubmit(e)}>
-        <label htmlFor="value">Category Name</label>
+      <form
+        className="flex flex-col gap-2 rounded-md  "
+        onSubmit={(e) => void handleCategorySubmit(e)}
+      >
+        <label className="text-left" htmlFor="value">
+          Category Name
+        </label>
         <input
-          className=""
+          className="rounded-md p-1 text-black"
           type="text"
           name="value"
           id="value"
@@ -50,7 +56,9 @@ export default function NewCategoryPage() {
           onChange={(e) => setValue(e.target.value)}
         />
 
-        <button type="submit">Submit</button>
+        <Button variant="primary_filled" size="base" type="submit">
+          Submit
+        </Button>
         {error && JSON.stringify(error)}
       </form>
     </>

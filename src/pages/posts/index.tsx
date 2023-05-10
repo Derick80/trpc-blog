@@ -2,18 +2,23 @@ import Link from "next/link";
 import Button from "~/components/button";
 import PostCard from "~/components/post-card";
 import { api } from "~/utils/api";
+import type { Metadata } from "next";
+
+const metadata: Metadata = {
+  title: "Derick's Blog",
+  description: "Derick's Blog",
+  // ...
+};
 
 function PostListingPage() {
   const { data, isLoading } = api.post.getAll.useQuery();
-
-  const categories = api.categories.getAll.useQuery();
 
   if (isLoading) {
     return <p>Loading...</p>;
   }
 
   return (
-    <div className="flex w-full flex-col gap-4 border-2 border-green-500 p-1">
+    <div className="flex w-full flex-col flex-wrap gap-4 border-2 border-green-500 p-1">
       <Tags />
       <h3 className="text-2xl font-bold  dark:text-slate-50">
         There are {data?.length} posts
@@ -43,7 +48,7 @@ function Tags() {
   }
 
   return (
-    <>
+    <div className="flex w-full flex-col flex-wrap gap-1 border-2 border-green-500 p-1">
       <h3 className="text-2xl font-bold  dark:text-slate-50">
         There are {data?.length} tags
       </h3>
@@ -52,7 +57,7 @@ function Tags() {
           data.map((tag) => {
             return (
               <div
-                className="mr-2 rounded-full bg-gray-200 px-3 py-1 text-sm font-semibold text-gray-700"
+                className="mr-2 w-full rounded-full bg-gray-200 px-3 py-1 text-sm font-semibold text-gray-700"
                 key={tag.id}
               >
                 {tag.value}
@@ -60,6 +65,6 @@ function Tags() {
             );
           })}
       </div>
-    </>
+    </div>
   );
 }

@@ -66,8 +66,6 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
  */
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
-import { User } from "@prisma/client";
-import { InferQueryOptions, InferQueryResult } from "@trpc/react-query/dist/utils/inferReactQueryProcedure";
 
 const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: superjson,
@@ -121,11 +119,6 @@ const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
  * @see https://trpc.io/docs/procedures
  */
 export const protectedProcedure = t.procedure.use(enforceUserIsAuthed);
-
-
-
-
-
 
 export type Comment = PrismaComment & {
   user: {

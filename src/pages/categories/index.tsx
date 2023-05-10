@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Button from "~/components/button";
 import Tags from "~/components/tags";
 import { api } from "~/utils/api";
 
@@ -10,16 +11,16 @@ export default function CategoryIndexPage() {
   }
 
   return (
-    <div className="flex w-full flex-col items-center gap-4">
+    <div className="flex flex-wrap items-center gap-1">
       <h3 className="text-2xl font-bold  dark:text-slate-50">
-        <Link href="/categories/new">
-          <p>Create Category</p>
-        </Link>
+        <Button variant="primary_filled" size="base">
+          <Link href="/categories/new">Create Category</Link>
+        </Button>
       </h3>
       <h3 className="text-2xl font-bold  dark:text-slate-50">
         There are {data?.length} categories
       </h3>
-      {data && <Tags tags={data} />}
+      <div className="flex flex-col gap-1">{data && <Tags tags={data} />}</div>
     </div>
   );
 }

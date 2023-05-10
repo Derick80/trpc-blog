@@ -119,79 +119,83 @@ export default function CreatePost() {
 
   return (
     <>
-      
-        <form onSubmit={(e) => void handlePostSubmit(e)}
-          className="flex flex-col gap-2 rounded-md"
-        >
-          <label
-          className="text-left"
-          htmlFor="Title">Title</label>
+      <form
+        onSubmit={(e) => void handlePostSubmit(e)}
+        className="flex flex-col gap-2 rounded-md"
+      >
+        <label className="text-left" htmlFor="Title">
+          Title
+        </label>
 
-          <input
-            type="text"
-            className="text-black rounded-md"
-            name="title"
-            onChange={(e) => setTitle(e.target.value)}
-          />
-          <label
-          className="text-left"
-          htmlFor="Content">Content</label>
-          <TipTap />
+        <input
+          type="text"
+          className="rounded-md text-black"
+          name="title"
+          onChange={(e) => setTitle(e.target.value)}
+        />
+        <label className="text-left" htmlFor="Content">
+          Content
+        </label>
+        <TipTap />
 
-          {error && JSON.stringify(error)}
-          <input type="text" className="text-black" name="url" value={url || ""} />
-          <label htmlFor="categories">Categories</label>
-       
-          <MultiSelect
-            data={data?.map((category) => ({
+        {error && JSON.stringify(error)}
+        <input
+          type="text"
+          className="text-black"
+          name="profileImage"
+          value={url || ""}
+        />
+        <label htmlFor="categories">Categories</label>
+
+        <MultiSelect
+          data={
+            data?.map((category) => ({
               value: category.value,
               label: category.value,
-            }))   || []}
-          
-            shadow="sm"
-            placeholder="Select categories"
-            label="Categories"
-            value={selected.split(",")}
-            onChange={(e) => setSelected(e.join(","))}
-          />
+            })) || []
+          }
+          shadow="sm"
+          placeholder="Select categories"
+          label="Categories"
+          value={selected.split(",")}
+          onChange={(e) => setSelected(e.join(","))}
+        />
 
-          <Button variant="primary_filled" type="submit">
-            Submit
-          </Button>
-        </form>
-        <section>
-          <h2 className="text-lg font-semibold">Standard Dropzone</h2>
+        <Button variant="primary_filled" type="submit">
+          Submit
+        </Button>
+      </form>
+      <section>
+        <h2 className="text-lg font-semibold">Standard Dropzone</h2>
 
-          <div {...getRootProps()} className="dropzone-container">
-            <input {...getInputProps()} />
-            {isDragActive ? (
-              <div className="flex h-full items-center justify-center font-semibold">
-                <p>Drop the file here...</p>
-              </div>
-            ) : (
-              <div className="flex h-full items-center justify-center font-semibold">
-                <p>Drag n drop file here, or click to select files</p>
-              </div>
-            )}
-          </div>
-          <aside className="my-2">
-            <h4 className="font-semibold text-zinc-400">
-              Files pending upload
-            </h4>
-            <ul>{files}</ul>
-          </aside>
-          <button
-            onClick={() => void handleSubmit()}
-            disabled={
-              presignedUrl === null ||
-              acceptedFiles.length === 0 ||
-              submitDisabled
-            }
-            className="submit-button"
-          >
-            Upload
-          </button>
-        </section>
+        <div {...getRootProps()} className="dropzone-container">
+          <input {...getInputProps()} />
+          {isDragActive ? (
+            <div className="flex h-full items-center justify-center font-semibold">
+              <p>Drop the file here...</p>
+            </div>
+          ) : (
+            <div className="flex h-full items-center justify-center font-semibold">
+              <p>Drag n drop file here, or click to select files</p>
+            </div>
+          )}
+        </div>
+        <aside className="my-2">
+          <h4 className="font-semibold text-zinc-400">Files pending upload</h4>
+          <ul>{files}</ul>
+        </aside>
+        <button
+          onClick={() => void handleSubmit()}
+          disabled={
+            presignedUrl === null ||
+            acceptedFiles.length === 0 ||
+            submitDisabled
+          }
+          className="submit-button"
+        >
+          Upload
+        </button>
+      </section>
     </>
   );
 }
