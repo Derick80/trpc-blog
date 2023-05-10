@@ -16,6 +16,9 @@ const getSlug = (title: string) =>
 export const postRouter = createTRPCRouter({
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.post.findMany({
+      where: {
+        published: true,
+      },
       orderBy: {
         createdAt: "desc",
       },
@@ -29,6 +32,7 @@ export const postRouter = createTRPCRouter({
         updatedAt: true,
         published: true,
         authorId: true,
+        categories: true,
         comments: {
           select: {
             id: true,
@@ -65,12 +69,15 @@ export const postRouter = createTRPCRouter({
       z.object({
         title: z.string().max(100),
         content: z.string().min(10),
+        category: z.string().max(100),
         url: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
       const slug = getSlug(input.title);
-      const { title, content, url } = input;
+      const { title, content, url, category } = input;
+      const categories = category.split(",").map((category) => category.trim());
+      console.log(categories, "categories");
 
       return await ctx.prisma.post.create({
         data: {
@@ -78,6 +85,12 @@ export const postRouter = createTRPCRouter({
           content: content,
           slug: slug,
           imageUrl: url,
+          categories: {
+            connectOrCreate: categories.map((category) => ({
+              where: { value: category },
+              create: { value: category },
+            })),
+          },
           author: {
             connect: {
               id: ctx.session.user.id,
@@ -92,6 +105,7 @@ export const postRouter = createTRPCRouter({
         postId: z.string().cuid(),
         title: z.string().max(100),
         content: z.string().min(10),
+        categories: z.string().max(100).array(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -102,6 +116,11 @@ export const postRouter = createTRPCRouter({
         data: {
           title: input.title,
           content: input.content,
+          categories: {
+            set: input.categories.map((category) => ({
+              value: category,
+            })),
+          },
         },
       });
     }),
@@ -130,10 +149,50 @@ export const postRouter = createTRPCRouter({
         where: {
           id: input.postId,
         },
-        include: {
-          comments: true,
+        select: {
+          id: true,
+          title: true,
+          slug: true,
+          imageUrl: true,
+          content: true,
+          createdAt: true,
+          updatedAt: true,
+          published: true,
+          authorId: true,
+          categories: true,
+          comments: {
+            select: {
+              id: true,
+              body: true,
+              createdAt: true,
+              updatedAt: true,
+              userId: true,
+              postId: true,
+              parentId: true,
+            },
+          },
+          _count: {
+            select: {
+              comments: true,
+              likes: true,
+            },
+          },
+          likes: true,
+          author:{
+            select:{
+              id:true,
+              name:true,
+              image:true,
+              email:true,
+              emailVerified:true
+
+          }
+        }
         },
+        
       });
+
+
     }),
   likePost: protectedProcedure
     .input(

@@ -14,13 +14,16 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <li>
             <Link href="/posts">Posts</Link>
           </li>
+          <li>
+            <Link href="/categories">Categories</Link>
+          </li>
         </ul>
         <div></div>
       </nav>
 
       <main className="relative mt-20 flex w-full flex-1 flex-col gap-3 px-20 text-center text-slate-50 md:flex-row">
-        <div className="flex w-full flex-col items-center border-2 py-2 md:min-h-screen md:w-1/5"></div>
-        <div className="relative flex min-h-screen w-full flex-col items-center justify-center border-2 py-2 md:w-4/5">
+        <div className="flex w-full flex-col items-center border-2 border-purple-500 py-2 md:min-h-screen md:w-1/5"></div>
+        <div className="relative flex min-h-screen w-full flex-col items-center justify-center border-2 border-red-500 py-2  md:w-4/5">
           {children}
         </div>
       </main>

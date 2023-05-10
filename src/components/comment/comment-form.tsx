@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import React from "react";
 import { api } from "~/utils/api";
+import Button from "../button";
 
 export default function CommentForm({
   parentId,
@@ -9,26 +10,26 @@ export default function CommentForm({
   parentId?: string;
   postId: string;
 }) {
-  const router = useRouter();
-  console.log(router, "router");
-
   const formRef = React.useRef<HTMLFormElement>(null);
 
   const [body, setBody] = React.useState<string>("");
   const [postingId, setPostId] = React.useState<string>(postId);
 
   const { mutateAsync, isSuccess } = api.comment.create.useMutation({});
-
+  const utils = api.useContext();
   const handleSubmit = async (body: string) => {
     await mutateAsync({
       postId: postingId,
       parentId,
       body,
     });
+    await utils.comment.invalidate();
+
+    formRef.current?.reset();
 
     if (isSuccess) {
-      await router.push(`/posts`);
       formRef.current?.reset();
+      await utils.comment.invalidate();
     }
   };
 
@@ -36,7 +37,7 @@ export default function CommentForm({
     <>
       <form
         ref={formRef}
-        className="flex flex-col"
+        className="flex flex-row gap-1 p-1"
         onSubmit={(e) => {
           e.preventDefault();
 
@@ -45,18 +46,20 @@ export default function CommentForm({
       >
         <input
           type="hidden"
+          className="text-black"
           value={postingId}
           onChange={(e) => setPostId(e.target.value)}
         />
         <input
           required
+          className="w-full rounded-md text-black"
           placeholder="Your spicey comment"
           onChange={(e) => setBody(e.target.value)}
         />
 
-        <button type="submit">
+        <Button variant="primary_filled" size="tiny" type="submit">
           {parentId ? "Post reply" : "Post comment"}
-        </button>
+        </Button>
       </form>
     </>
   );
