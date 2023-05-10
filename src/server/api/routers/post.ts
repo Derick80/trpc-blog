@@ -149,11 +149,50 @@ export const postRouter = createTRPCRouter({
         where: {
           id: input.postId,
         },
-        include: {
-          comments: true,
+        select: {
+          id: true,
+          title: true,
+          slug: true,
+          imageUrl: true,
+          content: true,
+          createdAt: true,
+          updatedAt: true,
+          published: true,
+          authorId: true,
           categories: true,
+          comments: {
+            select: {
+              id: true,
+              body: true,
+              createdAt: true,
+              updatedAt: true,
+              userId: true,
+              postId: true,
+              parentId: true,
+            },
+          },
+          _count: {
+            select: {
+              comments: true,
+              likes: true,
+            },
+          },
+          likes: true,
+          author:{
+            select:{
+              id:true,
+              name:true,
+              image:true,
+              email:true,
+              emailVerified:true
+
+          }
+        }
         },
+        
       });
+
+
     }),
   likePost: protectedProcedure
     .input(

@@ -14,11 +14,15 @@ export default function PostIdPage() {
 
   const postId = router.query.id as string;
   const { data: cats } = api.categories.getAll.useQuery();
+  
 
   const { data, isLoading } = api.post.getSingle.useQuery({
     postId: router.query.id as string,
   });
 
+
+  console.log(data, "data");
+  
   const selectedCategory = data?.categories?.map((category) => category.value);
   console.log(selectedCategory, "selectedCategory");
 
@@ -98,7 +102,9 @@ export default function PostIdPage() {
             <div>Loading ...</div>
           ) : (
             <>
-             <PostCard post={data} />
+            {data && <PostCard post={data
+
+            } />}
               <div className="flex flex-row gap-2">
                 <Button
                   variant="primary_filled"

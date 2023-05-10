@@ -141,18 +141,12 @@ export default function CreatePost() {
           {error && JSON.stringify(error)}
           <input type="text" className="text-black" name="url" value={url || ""} />
           <label htmlFor="categories">Categories</label>
-          {/* <select multiple name="categories" id="categories">
-            {data?.map((category) => (
-              <option key={category.id} value={category.value}>
-                {category.value}
-              </option>
-            ))}
-          </select> */}
+       
           <MultiSelect
             data={data?.map((category) => ({
               value: category.value,
               label: category.value,
-            }))}
+            }))   || []}
           
             shadow="sm"
             placeholder="Select categories"
