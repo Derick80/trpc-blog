@@ -13,29 +13,22 @@ export default function PostIdPage() {
 
   const postId = router.query.id as string;
   const { data: cats } = api.categories.getAll.useQuery();
-  
 
   const { data, isLoading } = api.post.getSingle.useQuery({
     postId: router.query.id as string,
   });
 
-
   console.log(data, "data");
-  
+
   const selectedCategory = data?.categories?.map((category) => category.value);
   console.log(selectedCategory, "selectedCategory");
 
-  const [selected, setSelected] = React.useState(
-   selectedCategory
-
-  );
+  const [selected, setSelected] = React.useState(selectedCategory);
   console.log(selected, "selected");
-
 
   const [edit, setEdit] = React.useState(false);
   const [title, setTitle] = React.useState<string>(data?.title as string);
   const [content, setContent] = React.useState(data?.content as string);
-
 
   const { mutateAsync: deletePost } = api.post.deletePost.useMutation();
 
@@ -47,20 +40,19 @@ export default function PostIdPage() {
   };
 
   const { mutateAsync: updatePost } = api.post.updatePost.useMutation();
-const utils = api.useContext();
+  const utils = api.useContext();
   const handleEdit = async (event: React.FormEvent<HTMLFormElement>) => {
     const formData = new FormData(event.currentTarget);
     const title = formData.get("title")?.toString();
     const content = formData.get("content")?.toString();
     const postId = formData.get("postId")?.toString() as string;
 
-
-    if (!title || !content || !postId || !selected ) return;
+    if (!title || !content || !postId || !selected) return;
 
     event.preventDefault();
-    const data = { title, content, postId, categories: selected  };
+    const data = { title, content, postId, categories: selected };
 
-    await updatePost(data,{
+    await updatePost(data, {
       onSuccess: () => {
         setEdit(false);
       },
@@ -70,27 +62,29 @@ const utils = api.useContext();
     });
 
     isLoading ? null : await router.push("/posts");
-
   };
 
   return (
     <div className="flex flex-col gap-4">
       {edit ? (
-        <form onSubmit={handleEdit} className="flex flex-col gap-4 rounded-md p-1">
+        <form
+          onSubmit={handleEdit}
+          className="flex flex-col gap-4 rounded-md p-1"
+        >
           <input type="hidden" name="postId" value={postId} />
-          <label
-            className="text-left"
-          htmlFor="title">Title</label>
+          <label className="text-left" htmlFor="title">
+            Title
+          </label>
           <input
             type="text"
-            className="rounded-md text-black p-1"
+            className="rounded-md p-1 text-black"
             name="title"
             defaultValue={data?.title}
             onChange={(e) => setTitle(e.target.value)}
           />
           <label htmlFor="content">Content</label>
           <TipTap content={data?.content} />
-        <label htmlFor="categories">Categories</label>
+          <label htmlFor="categories">Categories</label>
           {/* <SelectBox options={categories.map((
             category
           ) => ({ id: category, value: category, label: category }
@@ -106,8 +100,6 @@ const utils = api.useContext();
           <MultiSelect
             data={cats?.map((category) => category.value) || []}
             value={selected}
-
-      
             onChange={(value) => {
               setSelected(value);
             }}
@@ -115,7 +107,7 @@ const utils = api.useContext();
             multiple
             required
           />
-          
+
           <Button variant="primary_filled" size="base" type="submit">
             Update
           </Button>
@@ -126,9 +118,7 @@ const utils = api.useContext();
             <div>Loading ...</div>
           ) : (
             <>
-            {data && <PostCard post={data
-
-            } />}
+              {data && <PostCard post={data} />}
               <div className="flex flex-row gap-2">
                 <Button
                   variant="primary_filled"
@@ -137,8 +127,7 @@ const utils = api.useContext();
                 >
                   Edit
                 </Button>
-                
-                </div>
+              </div>
             </>
           )}
         </>

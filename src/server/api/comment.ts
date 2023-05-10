@@ -46,7 +46,7 @@ export const commentRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       const { parentId } = input;
       try {
-        const comments = await ctx.prisma.comment.findMany({
+        return await ctx.prisma.comment.findMany({
           where: {
             parent: {
               id: parentId,
@@ -57,10 +57,25 @@ export const commentRouter = createTRPCRouter({
           },
           include: {
             user: true,
-            children: true,
+            children: {
+              include: {
+                user: true,
+
+                children: {
+                  include: {
+                    user: true,
+
+                    children: {
+                      include: {
+                        user: true,
+                      },
+                    },
+                  },
+                },
+              },
+            },
           },
         });
-        return comments;
       } catch (err) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",

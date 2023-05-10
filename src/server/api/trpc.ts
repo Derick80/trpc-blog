@@ -120,11 +120,6 @@ const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
  */
 export const protectedProcedure = t.procedure.use(enforceUserIsAuthed);
 
-
-
-
-
-
 export type Comment = PrismaComment & {
   user: {
     id: string;

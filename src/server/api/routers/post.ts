@@ -178,21 +178,17 @@ export const postRouter = createTRPCRouter({
             },
           },
           likes: true,
-          author:{
-            select:{
-              id:true,
-              name:true,
-              image:true,
-              email:true,
-              emailVerified:true
-
-          }
-        }
+          author: {
+            select: {
+              id: true,
+              name: true,
+              image: true,
+              email: true,
+              emailVerified: true,
+            },
+          },
         },
-
       });
-
-
     }),
   likePost: protectedProcedure
     .input(
@@ -248,76 +244,71 @@ export const postRouter = createTRPCRouter({
         };
       }
     }),
-    getPostByCategory: publicProcedure
+  getPostByCategory: publicProcedure
     .input(
       z.object({
         category: z.string().max(100),
       })
     )
     .query(async ({ ctx, input }) => {
-       return await ctx.prisma.post.findMany({
-          where: {
-            categories: {
-              some: {
-                value: input.category,
-              },
+      return await ctx.prisma.post.findMany({
+        where: {
+          categories: {
+            some: {
+              value: input.category,
             },
           },
-          orderBy: {
-            createdAt: "desc",
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+        select: {
+          id: true,
+          title: true,
+          slug: true,
+          imageUrl: true,
+          content: true,
+          createdAt: true,
+          updatedAt: true,
+          published: true,
+          authorId: true,
+          categories: {
+            select: {
+              id: true,
+              value: true,
+              createdAt: true,
+              updatedAt: true,
+            },
           },
-          select: {
-            id: true,
-            title: true,
-            slug: true,
-            imageUrl: true,
-            content: true,
-            createdAt: true,
-            updatedAt: true,
-            published: true,
-            authorId: true,
-            categories: {
-              select: {
-                id: true,
-                value: true,
-                createdAt: true,
-                updatedAt: true,
-              },
-            }
-            ,
-            comments: {
-              select: {
-                id: true,
-                body: true,
-                createdAt: true,
-                updatedAt: true,
-                userId: true,
-                postId: true,
-                parentId: true,
-              },
+          comments: {
+            select: {
+              id: true,
+              body: true,
+              createdAt: true,
+              updatedAt: true,
+              userId: true,
+              postId: true,
+              parentId: true,
             },
-            author: {
-              select: {
-                id: true,
-                name: true,
-                image: true,
-                email: true,
-                emailVerified: true,
-              },
+          },
+          author: {
+            select: {
+              id: true,
+              name: true,
+              image: true,
+              email: true,
+              emailVerified: true,
             },
-
-            _count: {
-              select: {
-                comments: true,
-                likes: true,
-              },
-            },
-            likes: true,
-
           },
 
-
-});
+          _count: {
+            select: {
+              comments: true,
+              likes: true,
+            },
+          },
+          likes: true,
+        },
+      });
     }),
 });
-
