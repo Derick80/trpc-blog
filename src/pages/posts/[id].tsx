@@ -1,11 +1,9 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { MultiSelect } from "@mantine/core";
-import { TrashIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/router";
 import React from "react";
 import Button from "~/components/button";
 import PostCard from "~/components/post-card";
-import SelectBox from "~/components/select";
 import TipTap from "~/components/tip-tap";
 
 import { api } from "~/utils/api";
@@ -33,9 +31,6 @@ export default function PostIdPage() {
   );
   console.log(selected, "selected");
 
-  const [categories, setCategories] = React.useState<string[]>(
-    cats?.map((category) => category.value) || []
-  );
 
   const [edit, setEdit] = React.useState(false);
   const [title, setTitle] = React.useState<string>(data?.title as string);
@@ -52,7 +47,7 @@ export default function PostIdPage() {
   };
 
   const { mutateAsync: updatePost } = api.post.updatePost.useMutation();
-
+const utils = api.useContext();
   const handleEdit = async (event: React.FormEvent<HTMLFormElement>) => {
     const formData = new FormData(event.currentTarget);
     const title = formData.get("title")?.toString();
@@ -60,13 +55,22 @@ export default function PostIdPage() {
     const postId = formData.get("postId")?.toString() as string;
 
 
-    if (!title || !content || !postId ) return;
+    if (!title || !content || !postId || !selected ) return;
 
     event.preventDefault();
     const data = { title, content, postId, categories: selected  };
 
-    await updatePost(data);
+    await updatePost(data,{
+      onSuccess: () => {
+        setEdit(false);
+      },
+      onSettled: async () => {
+        await utils.post.invalidate();
+      },
+    });
+
     isLoading ? null : await router.push("/posts");
+
   };
 
   return (
