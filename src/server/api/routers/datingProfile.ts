@@ -110,24 +110,19 @@ export const datingProfileRouter = createTRPCRouter({
         data: {
           bio,
           pronouns,
-          ...(privatePhoto && {
-            privatePhotos: {
-              connect: {
-                imageUrl: privatePhoto,
-                datingProfileId: profileId,
-                locked: false,
-              },
+          privatePhotos: {
+            create: {
+              imageUrl: privatePhoto || "",
             },
-          }),
-          ...(publicPhoto && {
-            publicPhotos: {
-              connect: {
-                imageUrl: publicPhoto,
-                datingProfileId: profileId,
-              },
+          },
+          publicPhotos: {
+            create: {
+              imageUrl: publicPhoto || "",
+
             },
-          }),
+          },
         },
+
       });
     }),
   deleteDatingProfile: protectedProcedure
