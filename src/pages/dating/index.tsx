@@ -2,7 +2,7 @@ import { api } from "~/utils/api";
 import Image from "next/image";
 import React from "react";
 import Button from "~/components/button";
-import { Skeleton } from "~/components/ui/skeleton";
+
 
 export default function Dating() {
   const [edit, setEdit] = React.useState(false);
@@ -24,7 +24,6 @@ if(!data) return null
   console.log(privatePhotos, "privatePhotos");
     console.log(publicPhotos, "publicPhotos");
 
-    const {bio, pronouns} = data
 
   
   return (
