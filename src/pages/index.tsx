@@ -1,7 +1,5 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
-import { signIn, signOut, useSession } from "next-auth/react";
 
 import type { Metadata } from "next";
 
@@ -21,6 +19,19 @@ const Home: NextPage = () => {
         "
           content="Derick's T3 stack blog"
         />
+{
+        metadata.title && (
+          <>
+
+            <meta property="og:title" 
+            content={metadata.title.toString()} 
+            />
+            <meta name="twitter:title" content={metadata.title.toString()} />
+          </>
+        )
+        
+}
+
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex min-h-screen w-full flex-col items-center"></main>

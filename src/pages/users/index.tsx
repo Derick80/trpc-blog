@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Separator } from "~/components/ui/separator";
 import { api } from "~/utils/api";
 
 export default function UserIndex() {
@@ -46,7 +47,7 @@ export default function UserIndex() {
               height={200}
             />
           )}
-
+          <Separator />
           <div className="flex flex-row gap-2 p-1">
             <p className="text-sm font-semibold text-slate-50">User Posts:</p>
             {user._count?.posts ? (

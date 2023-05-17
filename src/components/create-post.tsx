@@ -7,6 +7,8 @@ import { object, string } from "zod";
 import { api } from "~/utils/api";
 import Button from "./button";
 import TipTap from "./tip-tap";
+import Input from "./input-element";
+import { env } from "~/env.mjs";
 
 export const postSchema = object({
   title: string()
@@ -94,6 +96,9 @@ export default function CreatePost() {
   }, [acceptedFiles, submitDisabled]);
 
   const handleSubmit = useCallback(async () => {
+    const bucket = process.env.BUCKET_NAME;
+    console.log(bucket, "bucket");
+
     if (acceptedFiles.length > 0 && presignedUrl !== null) {
       const file = acceptedFiles[0] as File;
       await axios
@@ -106,7 +111,7 @@ export default function CreatePost() {
         })
         .then(() => {
           setUrl(
-            `https://remix-bucket.s3.us-east-2.amazonaws.com/${file.name}`
+            `https://remix-bucket-2023.s3.us-east-2.amazonaws.com/${file.name}`
           );
         })
         .catch((err) => console.error(err));
@@ -127,10 +132,10 @@ export default function CreatePost() {
           Title
         </label>
 
-        <input
+        <Input
           type="text"
-          className="rounded-md text-black"
           name="title"
+          value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
         <label className="text-left" htmlFor="Content">
@@ -139,12 +144,13 @@ export default function CreatePost() {
         <TipTap />
 
         {error && JSON.stringify(error)}
-        <input
+        {/* <input
           type="text"
           className="text-black"
           name="profileImage"
           value={url || ""}
-        />
+        /> */}
+        <Input type="text" name="profileImage" value={url || ""} />
         <label htmlFor="categories">Categories</label>
 
         <MultiSelect
@@ -169,7 +175,7 @@ export default function CreatePost() {
         <h2 className="text-lg font-semibold">Standard Dropzone</h2>
 
         <div {...getRootProps()} className="dropzone-container">
-          <input {...getInputProps()} />
+          <Input {...getInputProps()} />
           {isDragActive ? (
             <div className="flex h-full items-center justify-center font-semibold">
               <p>Drop the file here...</p>
@@ -184,7 +190,9 @@ export default function CreatePost() {
           <h4 className="font-semibold text-zinc-400">Files pending upload</h4>
           <ul>{files}</ul>
         </aside>
-        <button
+        <Button
+          variant="primary_filled"
+          size="base"
           onClick={() => void handleSubmit()}
           disabled={
             presignedUrl === null ||
@@ -194,7 +202,7 @@ export default function CreatePost() {
           className="submit-button"
         >
           Upload
-        </button>
+        </Button>
       </section>
     </>
   );

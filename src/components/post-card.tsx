@@ -7,6 +7,7 @@ import React from "react";
 import { ChatBubbleIcon, TrashIcon } from "@radix-ui/react-icons";
 import LikeContainer from "./like-container";
 import Button from "./button";
+import { Separator } from "./ui/separator";
 
 type PostProps = {
   post: Post & {
@@ -44,7 +45,9 @@ export default function PostCard({ post }: PostProps) {
           />
         </div>
       </div>
-      <Divider />
+<Separator 
+  />
+
       <div className="flex flex-row flex-wrap gap-2">
         {post.categories.map((category) => {
           return (
@@ -59,7 +62,7 @@ export default function PostCard({ post }: PostProps) {
           );
         })}
       </div>
-      <Divider />
+     <Separator />
 
       <BlogAction postId={post.id} />
       {showComments && <CommentSection postId={post.id} />}
@@ -71,6 +74,7 @@ function BlogAction({ postId }: { postId: string }) {
   if (!postId) return null;
 
   const deleteMutation = api.post.deletePost.useMutation();
+  const utils = api.useContext();
 
   const handleDelete = async ({
     postId,
@@ -79,6 +83,7 @@ function BlogAction({ postId }: { postId: string }) {
     postId: string;
   }) => {
     await deleteMutation.mutateAsync({ postId });
+    await utils.post.invalidate();
   };
 
   return (

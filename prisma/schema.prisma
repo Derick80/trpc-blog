@@ -62,6 +62,44 @@ model User {
     likes        Like[]
     commentLikes CommentLike[]
     profile      Profile?
+    datingProfile DatingProfile?
+    privatePhotos  PrivatePhoto[] @relation("PhotoUnlockedBy")
+
+}
+
+model DatingProfile {
+    id       String   @id @default(cuid())
+    bio      String
+    pronouns String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    user     User     @relation(fields: [userId], references: [id])
+    userId String @unique
+    privatePhotos  PrivatePhoto[]
+    publicPhotos PublicPhoto[]
+    
+}
+
+model PublicPhoto {
+    id       String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    imageUrl String
+locked Boolean @default(false)
+    datingProfile DatingProfile @relation(fields: [datingProfileId], references: [id])
+    datingProfileId String
+}
+
+model PrivatePhoto {
+    id       String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    imageUrl String
+    locked Boolean @default(true)
+    unlockedBy  User? @relation("PhotoUnlockedBy", fields: [unlockedById], references: [id])
+    unlockedById String?
+    datingProfile DatingProfile @relation(fields: [datingProfileId], references: [id])
+    datingProfileId String
 }
 
 model Profile {

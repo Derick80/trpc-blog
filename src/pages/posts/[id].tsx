@@ -18,13 +18,9 @@ export default function PostIdPage() {
     postId: router.query.id as string,
   });
 
-  console.log(data, "data");
-
   const selectedCategory = data?.categories?.map((category) => category.value);
-  console.log(selectedCategory, "selectedCategory");
 
   const [selected, setSelected] = React.useState(selectedCategory);
-  console.log(selected, "selected");
 
   const [edit, setEdit] = React.useState(false);
   const [title, setTitle] = React.useState<string>(data?.title as string);
@@ -80,7 +76,6 @@ export default function PostIdPage() {
             className="rounded-md p-1 text-black"
             name="title"
             defaultValue={data?.title}
-            onChange={(e) => setTitle(e.target.value)}
           />
           <label htmlFor="content">Content</label>
           <TipTap content={data?.content} />

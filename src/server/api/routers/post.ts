@@ -255,7 +255,7 @@ export const postRouter = createTRPCRouter({
         where: {
           categories: {
             some: {
-              value: input.category,
+              id: input.category,
             },
           },
         },

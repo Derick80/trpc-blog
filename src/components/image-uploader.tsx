@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState, useMemo, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { api } from "~/utils/api";
+import Button from "./button";
 
 export default function ImageForm() {
   const [presignedUrl, setPresignedUrl] = useState<string | null>(null);
@@ -80,7 +81,9 @@ export default function ImageForm() {
         <h4 className="font-semibold text-zinc-400">Files pending upload</h4>
         <ul>{files}</ul>
       </aside>
-      <button
+      <Button
+        variant="warning_filled"
+        size="small"
         id="imageForm"
         onClick={() => void handleSubmit()}
         disabled={
@@ -89,7 +92,7 @@ export default function ImageForm() {
         className="submit-button"
       >
         Upload
-      </button>
+      </Button>
     </section>
   );
 }
