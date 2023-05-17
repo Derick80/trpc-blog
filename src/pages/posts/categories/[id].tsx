@@ -11,7 +11,7 @@ export default function PostIdPage() {
 
   const { data: cats } = api.categories.getAll.useQuery();
 
-  const { data, isLoading } = api.post.getPostByCategory.useQuery({
+  const { data } = api.post.getPostByCategory.useQuery({
     category: categoryId,
   });
 

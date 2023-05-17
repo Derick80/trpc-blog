@@ -23,17 +23,10 @@ export default function PostIdPage() {
   const [selected, setSelected] = React.useState(selectedCategory);
 
   const [edit, setEdit] = React.useState(false);
-  const [title, setTitle] = React.useState<string>(data?.title as string);
-  const [content, setContent] = React.useState(data?.content as string);
+ 
 
   const { mutateAsync: deletePost } = api.post.deletePost.useMutation();
 
-  const handleDelete = async (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-
-    await deletePost({ postId });
-    isLoading ? null : await router.push("/posts");
-  };
 
   const { mutateAsync: updatePost } = api.post.updatePost.useMutation();
   const utils = api.useContext();
