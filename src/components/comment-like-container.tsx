@@ -7,22 +7,20 @@ export default function CommentLikeContainer({
 }: {
   commentId: string;
 }) {
-  const { data, isLoading } = api.commentLike.getCommentLikes.useQuery({
+  const { data } = api.commentLike.getCommentLikes.useQuery({
     commentId,
   });
 
   const utils = api.useContext();
 
-  const { mutate, isSuccess, isError } = api.commentLike.toggleLike.useMutation(
-    {
-      onSuccess: () => {
-        void utils.commentLike.getCommentLikes.invalidate({ commentId });
-      },
-      onSettled: () => {
-        void utils.commentLike.getCommentLikes.invalidate({ commentId });
-      },
-    }
-  );
+  const { mutate } = api.commentLike.toggleLike.useMutation({
+    onSuccess: () => {
+      void utils.commentLike.getCommentLikes.invalidate({ commentId });
+    },
+    onSettled: () => {
+      void utils.commentLike.getCommentLikes.invalidate({ commentId });
+    },
+  });
 
   const { data: user } = useSession();
   if (!user) return null;

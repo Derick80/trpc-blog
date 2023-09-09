@@ -7,16 +7,13 @@ export default function PostIdPage() {
   const router = useRouter();
 
   const categoryId = router.query.id as string;
+  console.log(categoryId, "categoryId");
+
   const { data: cats } = api.categories.getAll.useQuery();
 
-  const { data, isLoading } = api.post.getPostByCategory.useQuery({
+  const { data } = api.post.getPostByCategory.useQuery({
     category: categoryId,
   });
-
-  console.log(categoryId, "categoryId");
-  console.log(cats, "cats");
-
-  console.log(data, "data");
 
   const selectedCategory = cats?.map((category) => category.value);
   console.log(selectedCategory, "selectedCategory");
@@ -27,16 +24,9 @@ export default function PostIdPage() {
     }) || []
   );
   console.log(selected, "selected");
-
-  const [categories, setCategories] = React.useState<string[]>(
-    cats?.map((category) => category.value) || []
-  );
-
-  const [edit, setEdit] = React.useState(false);
-
-  const { mutateAsync: deletePost } = api.post.deletePost.useMutation();
-  console.log(data, "data");
-
+  if (data?.length === 0) {
+    return router.back();
+  }
   return (
     <div>
       <h1>PostIdPage</h1>

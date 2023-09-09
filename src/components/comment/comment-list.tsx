@@ -5,8 +5,6 @@ import React from "react";
 import { api, type CommentWithChildren } from "~/utils/api";
 import CommentForm from "./comment-form";
 import { ChevronDownIcon, ChevronUpIcon } from "@radix-ui/react-icons";
-import { Comment as CommentType } from "~/utils/api";
-import { User } from "@prisma/client";
 import CommentLikeContainer from "../comment-like-container";
 
 function getReplyCountText(count: number) {
@@ -94,7 +92,7 @@ function Comment({
 }) {
   const [replies, setReplies] = React.useState(false);
   const [editing, setEditing] = React.useState(false);
-  const { data, isLoading } = api.comment.getChildComments.useQuery({
+  const { data } = api.comment.getChildComments.useQuery({
     parentId: comment.id,
   });
 
@@ -104,7 +102,7 @@ function Comment({
   const formRef = React.useRef<HTMLFormElement>(null);
 
   async function handleEdit(
-    e: React.FormEvent<HTMLFormElement>
+    e: React.FormEvent<HTMLFormElement>,
   ): Promise<void> {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);

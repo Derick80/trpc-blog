@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { CommentWithChildren, api } from "~/utils/api";
+import { type CommentWithChildren, api } from "~/utils/api";
 import CommentForm from "./comment/comment-form";
 import ListComments from "./comment/comment-list";
 

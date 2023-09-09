@@ -10,7 +10,11 @@
 const config = {
   reactStrictMode: true,
   images: {
-    domains: ["remix-bucket.s3.us-east-2.amazonaws.com"],
+    domains: [
+      "remix-bucket-2023.s3.us-east-2.amazonaws.com",
+      "remix-bucket.s3.us-east-2.amazonaws.com",
+      "cloudflare-ipfs.com",
+    ],
   },
   /**
    * If you have the "experimental: { appDir: true }" setting enabled, then you

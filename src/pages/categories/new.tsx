@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import React from "react";
 import { object, string } from "zod";
 import Button from "~/components/button";
+import Input from "~/components/input-element";
 import { api } from "~/utils/api";
 
 export const catergorySchema = object({
@@ -47,8 +48,7 @@ export default function NewCategoryPage() {
         <label className="text-left" htmlFor="value">
           Category Name
         </label>
-        <input
-          className="rounded-md p-1 text-black"
+        <Input
           type="text"
           name="value"
           id="value"

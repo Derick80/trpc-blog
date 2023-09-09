@@ -18,26 +18,14 @@ export default function PostIdPage() {
     postId: router.query.id as string,
   });
 
-  console.log(data, "data");
-
   const selectedCategory = data?.categories?.map((category) => category.value);
-  console.log(selectedCategory, "selectedCategory");
 
   const [selected, setSelected] = React.useState(selectedCategory);
-  console.log(selected, "selected");
 
   const [edit, setEdit] = React.useState(false);
-  const [title, setTitle] = React.useState<string>(data?.title as string);
-  const [content, setContent] = React.useState(data?.content as string);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { mutateAsync: deletePost } = api.post.deletePost.useMutation();
-
-  const handleDelete = async (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-
-    await deletePost({ postId });
-    isLoading ? null : await router.push("/posts");
-  };
 
   const { mutateAsync: updatePost } = api.post.updatePost.useMutation();
   const utils = api.useContext();
@@ -80,7 +68,6 @@ export default function PostIdPage() {
             className="rounded-md p-1 text-black"
             name="title"
             defaultValue={data?.title}
-            onChange={(e) => setTitle(e.target.value)}
           />
           <label htmlFor="content">Content</label>
           <TipTap content={data?.content} />

@@ -62,8 +62,9 @@ model User {
     likes        Like[]
     commentLikes CommentLike[]
     profile      Profile?
-}
+   
 
+}
 model Profile {
     id        String   @id @default(cuid())
     createdAt DateTime @default(now())

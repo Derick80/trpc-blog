@@ -1,8 +1,5 @@
-import axios from "axios";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
-import React, { useCallback, useMemo, useState } from "react";
-import { useDropzone } from "react-dropzone";
+import React, {  } from "react";
 import ProfileCard from "~/components/profile-card";
 import { api } from "~/utils/api";
 

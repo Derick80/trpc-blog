@@ -3,6 +3,7 @@ import Button from "~/components/button";
 import PostCard from "~/components/post-card";
 import { api } from "~/utils/api";
 import type { Metadata } from "next";
+import Head from "next/head";
 
 const metadata: Metadata = {
   title: "Derick's Blog",
@@ -18,7 +19,22 @@ function PostListingPage() {
   }
 
   return (
-    <div className="flex w-full flex-col flex-wrap gap-4 border-2 border-green-500 p-1">
+    <>
+    <Head>
+        <title>ブログ Derick's blog</title>
+      {
+        metadata.title && (
+            <><meta
+              content={metadata?.title.toString()} /><meta property="og:title"
+                content={metadata?.title.toString()} /><meta name="twitter:title" content={metadata?.title.toString()} /></>
+        )
+        
+      }
+
+   
+   </Head>
+      <div className="flex w-full flex-col items-center">
+         <div className="flex w-full flex-col flex-wrap gap-4 border-2 border-green-500 p-1">
       <Tags />
       <h3 className="text-2xl font-bold  dark:text-slate-50">
         There are {data?.length} posts
@@ -35,6 +51,9 @@ function PostListingPage() {
           })}
       </div>
     </div>
+      </div>
+
+    </>
   );
 }
 
@@ -57,10 +76,12 @@ function Tags() {
           data.map((tag) => {
             return (
               <div
-                className="mr-2 w-full rounded-full bg-gray-200 px-3 py-1 text-sm font-semibold text-gray-700"
+                className="mr-2 w-fit rounded-full bg-gray-200 px-3 py-1 text-sm font-semibold text-gray-700"
                 key={tag.id}
               >
-                {tag.value}
+                <Link href={`/posts/categories/${tag.id}`}>
+                  <p className="text-xs font-semibold">{tag.value}</p>
+                </Link>
               </div>
             );
           })}

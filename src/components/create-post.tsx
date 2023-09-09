@@ -7,6 +7,7 @@ import { object, string } from "zod";
 import { api } from "~/utils/api";
 import Button from "./button";
 import TipTap from "./tip-tap";
+import Input from "./input-element";
 
 export const postSchema = object({
   title: string()
@@ -24,22 +25,24 @@ export const postSchema = object({
 export default function CreatePost() {
   const router = useRouter();
   const [title, setTitle] = React.useState<string>("");
-  const [error, setError] = React.useState();
-  const { data, isLoading } = api.categories.getAll.useQuery();
+  const [error, setError] = React.useState({
+    message: "",
+  });
+  const { data } = api.categories.getAll.useQuery();
 
-  const { mutateAsync, isSuccess } = api.post.new.useMutation();
+  const { mutateAsync } = api.post.new.useMutation();
   const [selected, setSelected] = useState<string>("");
-  const [categories, setCategories] = useState<string[]>(
-    data?.map((category) => category.value) || []
-  );
 
   async function handlePostSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const title = formData.get("title")?.toString();
-    const content = formData.get("content")?.toString();
+    const title = formData.get("title") as string;
+    const content = formData.get("content") as string;
 
-    if (!title || !content || !categories) return;
+    if (typeof title !== "string" && typeof content !== "string") {
+      return setError({ message: "Title and Content must be filled out" });
+    }
+
     const data = {
       title,
       content,
@@ -54,6 +57,7 @@ export default function CreatePost() {
       // @ts-ignore
       return setError(error);
     }
+
     await mutateAsync(data);
     await router.push("/posts");
   }
@@ -69,6 +73,7 @@ export default function CreatePost() {
       maxFiles: 1,
       maxSize: 5 * 2 ** 30, // roughly 5GB
       multiple: false,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       onDropAccepted: (files, _event) => {
         const file = files[0] as File;
 
@@ -94,6 +99,9 @@ export default function CreatePost() {
   }, [acceptedFiles, submitDisabled]);
 
   const handleSubmit = useCallback(async () => {
+    const bucket = process.env.BUCKET_NAME;
+    console.log(bucket, "bucket");
+
     if (acceptedFiles.length > 0 && presignedUrl !== null) {
       const file = acceptedFiles[0] as File;
       await axios
@@ -106,7 +114,7 @@ export default function CreatePost() {
         })
         .then(() => {
           setUrl(
-            `https://remix-bucket.s3.us-east-2.amazonaws.com/${file.name}`
+            `https://remix-bucket-2023.s3.us-east-2.amazonaws.com/${file.name}`,
           );
         })
         .catch((err) => console.error(err));
@@ -127,24 +135,26 @@ export default function CreatePost() {
           Title
         </label>
 
-        <input
+        <Input
           type="text"
-          className="rounded-md text-black"
           name="title"
+          value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
+        {error.message && <p className="text-red-500">{error.message}</p>}
         <label className="text-left" htmlFor="Content">
           Content
         </label>
         <TipTap />
 
-        {error && JSON.stringify(error)}
-        <input
+        {/* <input
           type="text"
           className="text-black"
           name="profileImage"
           value={url || ""}
-        />
+        /> */}
+        {error.message && <p className="text-red-500">{error.message}</p>}
+        <Input type="text" name="profileImage" value={url || ""} />
         <label htmlFor="categories">Categories</label>
 
         <MultiSelect
@@ -169,7 +179,7 @@ export default function CreatePost() {
         <h2 className="text-lg font-semibold">Standard Dropzone</h2>
 
         <div {...getRootProps()} className="dropzone-container">
-          <input {...getInputProps()} />
+          <Input {...getInputProps()} />
           {isDragActive ? (
             <div className="flex h-full items-center justify-center font-semibold">
               <p>Drop the file here...</p>
@@ -184,7 +194,9 @@ export default function CreatePost() {
           <h4 className="font-semibold text-zinc-400">Files pending upload</h4>
           <ul>{files}</ul>
         </aside>
-        <button
+        <Button
+          variant="primary_filled"
+          size="base"
           onClick={() => void handleSubmit()}
           disabled={
             presignedUrl === null ||
@@ -194,7 +206,7 @@ export default function CreatePost() {
           className="submit-button"
         >
           Upload
-        </button>
+        </Button>
       </section>
     </>
   );
