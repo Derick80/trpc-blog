@@ -8,7 +8,6 @@ import { api } from "~/utils/api";
 import Button from "./button";
 import TipTap from "./tip-tap";
 import Input from "./input-element";
-import { env } from "~/env.mjs";
 
 export const postSchema = object({
   title: string()
@@ -26,10 +25,13 @@ export const postSchema = object({
 export default function CreatePost() {
   const router = useRouter();
   const [title, setTitle] = React.useState<string>("");
-  const [error, setError] = React.useState();
-  const { data, isLoading } = api.categories.getAll.useQuery();
+  const [error, setError] = React.useState({
+    message: "",
 
-  const { mutateAsync, isSuccess } = api.post.new.useMutation();
+  });
+  const { data } = api.categories.getAll.useQuery();
+
+  const { mutateAsync } = api.post.new.useMutation();
   const [selected, setSelected] = useState<string>("");
   const [categories, setCategories] = useState<string[]>(
     data?.map((category) => category.value) || []
@@ -38,10 +40,15 @@ export default function CreatePost() {
   async function handlePostSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const title = formData.get("title")?.toString();
-    const content = formData.get("content")?.toString();
+    const title = formData.get("title")  as string
+    const content = formData.get("content") as string
 
-    if (!title || !content || !categories) return;
+    if(typeof title !== "string" && typeof content !== "string"){
+      return setError({message: "Title and Content must be filled out"})
+    }
+
+ 
+
     const data = {
       title,
       content,
@@ -49,16 +56,28 @@ export default function CreatePost() {
       category: selected,
     };
 
+    
+
+
     try {
-      await postSchema.parseAsync(data);
+      await postSchema.parseAsync(data)
     } catch (error) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       return setError(error);
-    }
-    await mutateAsync(data);
+      
+      }
+
+
+    
+    await mutateAsync(data 
+      );
     await router.push("/posts");
   }
+
+
+
+
 
   const [presignedUrl, setPresignedUrl] = useState<string | null>(null);
   const [url, setUrl] = useState<string>("");
@@ -138,18 +157,25 @@ export default function CreatePost() {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
+       {error.message && <p className="text-red-500">{error.message}</p>
+        }
         <label className="text-left" htmlFor="Content">
           Content
         </label>
         <TipTap />
 
-        {error && JSON.stringify(error)}
+
         {/* <input
           type="text"
           className="text-black"
           name="profileImage"
           value={url || ""}
         /> */}
+        {
+         error.message && <p className="text-red-500">{error.message}</p>
+
+
+        }
         <Input type="text" name="profileImage" value={url || ""} />
         <label htmlFor="categories">Categories</label>
 
