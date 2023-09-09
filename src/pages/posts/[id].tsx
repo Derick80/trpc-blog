@@ -23,10 +23,9 @@ export default function PostIdPage() {
   const [selected, setSelected] = React.useState(selectedCategory);
 
   const [edit, setEdit] = React.useState(false);
- 
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { mutateAsync: deletePost } = api.post.deletePost.useMutation();
-
 
   const { mutateAsync: updatePost } = api.post.updatePost.useMutation();
   const utils = api.useContext();

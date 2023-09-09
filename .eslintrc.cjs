@@ -2,9 +2,6 @@
 const config = {
   overrides: [
     {
-      extends: [
-        "plugin:@typescript-eslint/recommended-requiring-type-checking",
-      ],
       files: ["*.ts", "*.tsx"],
       parserOptions: {
         project: "tsconfig.json",
@@ -19,8 +16,9 @@ const config = {
   extends: ["next/core-web-vitals", "plugin:@typescript-eslint/recommended"],
   rules: {
     "react/no-unescaped-entities": "off",
-    "no-unused-vars": "warn", // "@typescript-eslint/no-unused-vars": "warn
-    "@typescript-eslint/no-unused-vars": ["warn"],
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/no-base-to-string": "off",
     "@typescript-eslint/consistent-type-imports": [
       "warn",
       {

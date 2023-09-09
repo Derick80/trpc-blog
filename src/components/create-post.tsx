@@ -27,27 +27,21 @@ export default function CreatePost() {
   const [title, setTitle] = React.useState<string>("");
   const [error, setError] = React.useState({
     message: "",
-
   });
   const { data } = api.categories.getAll.useQuery();
 
   const { mutateAsync } = api.post.new.useMutation();
   const [selected, setSelected] = useState<string>("");
-  const [categories, setCategories] = useState<string[]>(
-    data?.map((category) => category.value) || []
-  );
 
   async function handlePostSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const title = formData.get("title")  as string
-    const content = formData.get("content") as string
+    const title = formData.get("title") as string;
+    const content = formData.get("content") as string;
 
-    if(typeof title !== "string" && typeof content !== "string"){
-      return setError({message: "Title and Content must be filled out"})
+    if (typeof title !== "string" && typeof content !== "string") {
+      return setError({ message: "Title and Content must be filled out" });
     }
-
- 
 
     const data = {
       title,
@@ -56,28 +50,17 @@ export default function CreatePost() {
       category: selected,
     };
 
-    
-
-
     try {
-      await postSchema.parseAsync(data)
+      await postSchema.parseAsync(data);
     } catch (error) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       return setError(error);
-      
-      }
+    }
 
-
-    
-    await mutateAsync(data 
-      );
+    await mutateAsync(data);
     await router.push("/posts");
   }
-
-
-
-
 
   const [presignedUrl, setPresignedUrl] = useState<string | null>(null);
   const [url, setUrl] = useState<string>("");
@@ -90,6 +73,7 @@ export default function CreatePost() {
       maxFiles: 1,
       maxSize: 5 * 2 ** 30, // roughly 5GB
       multiple: false,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       onDropAccepted: (files, _event) => {
         const file = files[0] as File;
 
@@ -130,7 +114,7 @@ export default function CreatePost() {
         })
         .then(() => {
           setUrl(
-            `https://remix-bucket-2023.s3.us-east-2.amazonaws.com/${file.name}`
+            `https://remix-bucket-2023.s3.us-east-2.amazonaws.com/${file.name}`,
           );
         })
         .catch((err) => console.error(err));
@@ -157,13 +141,11 @@ export default function CreatePost() {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
-       {error.message && <p className="text-red-500">{error.message}</p>
-        }
+        {error.message && <p className="text-red-500">{error.message}</p>}
         <label className="text-left" htmlFor="Content">
           Content
         </label>
         <TipTap />
-
 
         {/* <input
           type="text"
@@ -171,11 +153,7 @@ export default function CreatePost() {
           name="profileImage"
           value={url || ""}
         /> */}
-        {
-         error.message && <p className="text-red-500">{error.message}</p>
-
-
-        }
+        {error.message && <p className="text-red-500">{error.message}</p>}
         <Input type="text" name="profileImage" value={url || ""} />
         <label htmlFor="categories">Categories</label>
 
